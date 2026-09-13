@@ -39,6 +39,27 @@ export default function Home() {
     return () => window.removeEventListener('scroll', updateProgress);
   }, []);
 
+  // Konami easter egg
+  useEffect(() => {
+    let code: string[] = [];
+    const konami = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+    const onKeyDown = (e: KeyboardEvent) => {
+      code.push(e.key);
+      code = code.slice(-10);
+      if (code.join(',') === konami.join(',')) {
+        document.body.style.filter = 'hue-rotate(90deg)';
+        setTimeout(() => { document.body.style.filter = ''; }, 3000);
+        const el = document.createElement('div');
+        el.textContent = 'HOLO MODE ACTIVATED • ALL SLABS ARE NOW RAINBOW';
+        el.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#FF4D00;color:white;padding:12px 24px;font-family:monospace;font-size:12px;z-index:99999;';
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 3000);
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, []);
+
   if (!mounted) return null;
 
   return (
@@ -75,27 +96,6 @@ export default function Home() {
           </div>
         </section>
       </div>
-
-      {/* Konami easter egg */}
-      <script dangerouslySetInnerHTML={{ __html: `
-        (function(){
-          let code = [];
-          const konami = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
-          window.addEventListener('keydown', (e) => {
-            code.push(e.key);
-            code = code.slice(-10);
-            if (code.join(',') === konami.join(',')) {
-              document.body.style.filter = 'hue-rotate(90deg)';
-              setTimeout(() => document.body.style.filter = '', 3000);
-              const el = document.createElement('div');
-              el.textContent = 'HOLO MODE ACTIVATED • ALL SLABS ARE NOW RAINBOW';
-              el.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#FF4D00;color:white;padding:12px 24px;font-family:monospace;font-size:12px;z-index:99999;';
-              document.body.appendChild(el);
-              setTimeout(() => el.remove(), 3000);
-            }
-          });
-        })();
-      `}} />
     </main>
   );
 }

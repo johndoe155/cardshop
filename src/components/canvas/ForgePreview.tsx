@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import { useTexture, OrbitControls, PerspectiveCamera } from '@react-three/drei';
 import { useVaultStore } from '@/store/useVaultStore';
 import { easing } from 'maath';
+import '@/components/canvas/HoloMaterial'; // registers holoShaderMaterial via extend()
 
 function SlabMesh() {
   const meshRef = useRef<THREE.Mesh>(null);
