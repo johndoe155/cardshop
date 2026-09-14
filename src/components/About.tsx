@@ -6,16 +6,18 @@ export function About() {
     <section id="about" className="relative py-24 md:py-32 px-6 md:px-12 xl:px-24 bg-[#080808]">
       <div className="max-w-[1600px] mx-auto grid lg:grid-cols-[0.8fr_1.2fr] gap-12 md:gap-24 items-start">
         <div className="lg:sticky lg:top-32">
-          <SlabFrame label="FOUNDER • NEMO • @heyitsnemo_" foil>
+          <SlabFrame label="FOUNDER • NEMO • @heyitsnemo_ • REAL MASCOT" foil>
             <div className="aspect-[4/5] bg-[#0a0a0a] relative overflow-hidden">
-              <img src="/nemo-mascot.png" alt="Nemo" className="w-full h-full object-cover" />
+              <img src="/mascot/front.png" alt="Nemo front" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <div className="font-display font-black text-[32px] leading-none tracking-tighter text-white">NEMO</div>
-                <div className="font-mono text-[10px] tracking-widest text-[#FF4D00] mt-1">PENGUIN • BUILDER • COLLECTOR</div>
+                <div className="font-mono text-[10px] tracking-widest text-[#FF4D00] mt-1">PENGUIN • BUILDER • COLLECTOR • REAL</div>
               </div>
-              {/* Sticker */}
-              <div className="absolute top-4 right-4 w-12 h-12 bg-[#FF4D00] rounded-full grid place-items-center font-black text-[18px] text-white rotate-12">N</div>
+              <div className="absolute top-4 right-4 w-12 h-12 bg-[#F5F3EF] p-2 rounded-full grid place-items-center rotate-12 border border-[#FF4D00]/20">
+                <img src="/logo-mark.svg" alt="N" className="w-full h-full object-contain" />
+              </div>
+              <img src="/mascot/thumbs-up.png" alt="thumbs" className="absolute bottom-20 right-4 w-16 h-16 object-contain hidden md:block" />
             </div>
           </SlabFrame>
           

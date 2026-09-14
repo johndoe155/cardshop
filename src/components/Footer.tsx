@@ -94,13 +94,12 @@ export function Footer() {
         <div className="grid lg:grid-cols-[1.5fr_1fr_1fr_1fr] gap-12">
           <div>
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 bg-[#F5F3EF] text-black grid place-items-center font-black text-[18px] tracking-tighter leading-none">
-                N
-                <span className="text-[10px] -mt-1">MØ</span>
+              <div className="w-12 h-12 bg-[#F5F3EF] p-2 grid place-items-center">
+                <img src="/logo-mark.svg" alt="Nemo's" className="w-full h-full object-contain" />
               </div>
               <div className="leading-none">
-                <div className="font-display font-black text-[18px] tracking-tight">NEMO'S CARD SHOP</div>
-                <div className="font-mono text-[9px] tracking-[0.2em] opacity-60">DIGITAL SOUL • PHYSICAL FORM • PHYSICS</div>
+                <img src="/logo-wordmark.svg" alt="NEMO'S CARD SHOP" className="h-6 invert mb-1" />
+                <div className="font-mono text-[9px] tracking-[0.2em] opacity-60">DIGITAL SOUL • PHYSICAL FORM • REAL BRAND</div>
               </div>
             </div>
             <p className="font-body text-[13px] leading-relaxed text-[#F5F3EF]/50 max-w-[320px]">

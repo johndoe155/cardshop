@@ -29,9 +29,8 @@ export function Navbar() {
             onMouseLeave={() => setCursor(false)}
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
-            <div className="w-10 h-10 bg-[#F5F3EF] text-black grid place-items-center font-black text-[14px] tracking-tighter leading-none">
-              N
-              <span className="text-[8px] -mt-1">MØ</span>
+            <div className="w-10 h-10 bg-[#F5F3EF] grid place-items-center p-1.5">
+              <img src="/logo-mark.svg" alt="Nemo's" className="w-full h-full object-contain" />
             </div>
             <div className="hidden md:block leading-none">
               <div className="font-display font-black text-[16px] tracking-tight">NEMO'S</div>

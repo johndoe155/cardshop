@@ -124,13 +124,16 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <>
       {children}
-      {/* Nemo idle follower */}
+      {/* Nemo idle follower - real mascot */}
       <div className={`fixed pointer-events-none z-[9999] transition-opacity duration-1000 ${nemoActive ? 'opacity-100' : 'opacity-0'}`} id="nemo-follower">
-        <div className="w-12 h-12 bg-[#FF4D00] rounded-full grid place-items-center font-black text-white animate-bounce border-2 border-white shadow-[0_0_20px_rgba(255,77,0,0.5)]">
-          N
+        <div className="relative">
+          <img src="/mascot/idle.png" alt="Nemo idle" className="w-16 h-16 object-contain animate-bounce drop-shadow-[0_0_20px_rgba(255,77,0,0.5)]" />
+          <div className="absolute -top-1 -right-1 w-5 h-5 bg-[#F5F3EF] p-1 rounded-full border border-[#FF4D00]/20 grid place-items-center">
+            <img src="/logo-mark.svg" alt="N" className="w-full h-full object-contain" />
+          </div>
         </div>
-        <div className="mt-1 font-mono text-[8px] tracking-widest bg-black text-white px-1 py-0.5 border border-white/20 whitespace-nowrap">
-          NEMO • IDLE • FOLLOWING
+        <div className="mt-1 font-mono text-[8px] tracking-widest bg-black text-white px-1.5 py-0.5 border border-white/20 whitespace-nowrap">
+          NEMO • IDLE • FOLLOWING • REAL
         </div>
       </div>
     </>

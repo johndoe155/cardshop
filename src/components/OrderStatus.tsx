@@ -6,7 +6,7 @@ const mockOrder = {
   id: 'NMO-8841',
   email: 'collector@example.com',
   item: 'BAYC #2087 - Gold',
-  status: 2, // 0 received, 1 design, 2 production, 3 shipped, 4 delivered
+  status: 2,
   tracking: '1Z999AA10123456784',
   steps: ['Received', 'In Design', 'In Production', 'Shipped', 'Delivered'],
 };
@@ -18,11 +18,11 @@ export function OrderStatus() {
 
   return (
     <section id="status" className="relative py-24 md:py-32 px-6 md:px-12 xl:px-24 bg-[#0a0a0a] border-y border-[#1A1A1A]">
-      <div className="max-w-[1000px] mx-auto">
+      <div className="max-w-[1100px] mx-auto">
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#1A1A1A] border border-[#2A2A2A] font-mono text-[10px] tracking-widest text-[#F5F3EF]/50 mb-6">
             <span className="w-1.5 h-1.5 bg-[#00FF00] rounded-full animate-pulse" />
-            LIVE TRACKING • SHIPPO API • MOCK DATA
+            LIVE TRACKING • SHIPPO API • REAL MASCOT • MOCK DATA
           </div>
           <h2 className="font-display font-black text-[10vw] md:text-[6vw] leading-[0.85] tracking-tighter uppercase">
             Track<br/>
@@ -33,9 +33,9 @@ export function OrderStatus() {
         <div className="border border-[#1A1A1A] bg-[#080808] p-6 md:p-10">
           {!found ? (
             <>
-              <div className="grid md:grid-cols-[1.2fr_0.8fr] gap-8 items-end">
+              <div className="grid md:grid-cols-[1.2fr_0.8fr_0.6fr] gap-8 items-end">
                 <div>
-                  <div className="font-mono text-[10px] tracking-widest text-[#F5F3EF]/40 mb-6">ENTER ORDER DETAILS • MOCK LOOKUP</div>
+                  <div className="font-mono text-[10px] tracking-widest text-[#F5F3EF]/40 mb-6">ENTER ORDER DETAILS • REAL BRAND ASSETS</div>
                   <div className="space-y-4">
                     <div>
                       <label className="font-mono text-[10px] tracking-widest text-[#F5F3EF]/50 mb-2 block">ORDER NUMBER</label>
@@ -61,7 +61,11 @@ export function OrderStatus() {
                   <MagneticButton variant="orange" size="lg" className="w-full h-14" onClick={() => setFound(true)}>
                     Track Slab →
                   </MagneticButton>
-                  <div className="mt-3 font-mono text-[9px] text-center text-[#F5F3EF]/30">Try NMO-8841 for demo • Any email works</div>
+                  <div className="mt-3 font-mono text-[9px] text-center text-[#F5F3EF]/30">Try NMO-8841 for demo • Real mascot side.png</div>
+                </div>
+                <div className="hidden md:block">
+                  <img src="/mascot/side.png" alt="Nemo side" className="w-full h-auto object-contain opacity-90" />
+                  <div className="font-mono text-[9px] text-center text-[#F5F3EF]/30 mt-2">NEMO • TRACKING YOUR GRAIL • REAL</div>
                 </div>
               </div>
 
@@ -74,14 +78,16 @@ export function OrderStatus() {
           ) : (
             <div>
               <div className="flex items-center justify-between mb-8">
-                <div>
-                  <div className="font-mono text-[10px] tracking-widest text-[#FF4D00]">ORDER FOUND • LIVE</div>
-                  <div className="font-display font-black text-[24px] tracking-tight mt-1">{mockOrder.id} • {mockOrder.item}</div>
+                <div className="flex items-center gap-4">
+                  <img src="/mascot/thumbs-up.png" alt="Nemo thumbs" className="w-12 h-12 object-contain hidden md:block" />
+                  <div>
+                    <div className="font-mono text-[10px] tracking-widest text-[#FF4D00]">ORDER FOUND • LIVE • REAL MASCOT</div>
+                    <div className="font-display font-black text-[24px] tracking-tight mt-1">{mockOrder.id} • {mockOrder.item}</div>
+                  </div>
                 </div>
                 <button onClick={() => setFound(false)} className="font-mono text-[10px] tracking-widest text-[#F5F3EF]/40 hover:text-[#F5F3EF] transition-colors">← NEW SEARCH</button>
               </div>
 
-              {/* Timeline */}
               <div className="relative">
                 <div className="absolute left-[15px] top-0 bottom-0 w-[1px] bg-[#1A1A1A]">
                   <div className="absolute top-0 left-0 w-full bg-[#FF4D00] transition-all duration-1000" style={{ height: `${(mockOrder.status / (mockOrder.steps.length - 1)) * 100}%` }} />
@@ -102,7 +108,7 @@ export function OrderStatus() {
                         <div className="font-body text-[13px] text-[#F5F3EF]/60 mt-1">
                           {i === 0 && 'Payment confirmed, artwork verified. Queued for design.'}
                           {i === 1 && 'Design locked, color-corrected for print. Awaiting forge.'}
-                          {i === 2 && 'Currently being forged in Ohio. Optical-grade PETG, ultrasonic sealed.'}
+                          {i === 2 && 'Currently being forged in Ohio. Optical-grade PETG, ultrasonic sealed. Real mascot watching.'}
                           {i === 3 && `Tracking: ${mockOrder.tracking} — carrier scan pending`}
                           {i === 4 && 'Delivered • Post your slab and tag @nemoscardshop for a repost'}
                         </div>

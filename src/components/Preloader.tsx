@@ -48,17 +48,21 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
       }} />
 
       <div ref={textRef} className="relative z-10 text-center">
-        {/* Logo stamp animation */}
+        {/* Logo stamp animation with real assets */}
         <div className="mb-12 flex justify-center">
           <div className="relative">
-            <div className="w-24 h-24 border border-[#FF4D00] grid place-items-center animate-pulse">
-              <span className="font-black text-3xl text-[#F5F3EF]">N</span>
+            <div className="w-24 h-24 border border-[#FF4D00] bg-[#F5F3EF] grid place-items-center p-3 animate-pulse">
+              <img src="/logo-mark.svg" alt="Nemo's" className="w-full h-full object-contain" />
             </div>
             <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-[#FF4D00]" />
+            <img src="/mascot/stamping.png" alt="Nemo stamping" className="absolute -top-8 -right-12 w-16 h-16 object-contain rotate-12 hidden md:block" />
           </div>
         </div>
 
         <div className="overflow-hidden">
+          <div className="flex justify-center mb-4">
+            <img src="/logo-wordmark.svg" alt="Nemo's Card Shop" className="h-12 md:h-16 invert" />
+          </div>
           <h1 className="font-display font-black text-[14vw] md:text-[10vw] leading-[0.85] tracking-tighter text-[#F5F3EF]">
             <span className="block">NEMO'S</span>
             <span className="block font-light italic">VAULT</span>

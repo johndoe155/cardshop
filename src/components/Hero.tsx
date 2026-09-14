@@ -27,13 +27,16 @@ export function Hero() {
       // gradient/sweep renders exactly as authored in .foil-text / @keyframes
       // foilShift, and animate it in as a single unit instead of per-character.
       const foilEl = titleRef.current!.querySelector('.foil-text') as HTMLElement | null;
-      const chars = foilEl ? split.chars.filter((c) => !foilEl.contains(c)) : split.chars;
+      const allChars = split.chars || [];
+      const chars = foilEl ? allChars.filter((c) => !foilEl.contains(c)) : allChars;
       if (foilEl) {
         foilEl.textContent = 'Form.';
         gsap.set(foilEl, { y: '110%', opacity: 0 });
       }
 
-      gsap.set(chars, { y: '110%', opacity: 0, rotateX: -30 });
+      if (chars.length > 0) {
+        gsap.set(chars, { y: '110%', opacity: 0, rotateX: -30 });
+      }
 
       gsap.to(chars, {
         y: '0%',

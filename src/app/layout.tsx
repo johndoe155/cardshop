@@ -4,26 +4,42 @@ import { Providers, CustomCursor } from "@/components/Providers";
 import { CanvasRoot } from "@/components/canvas/CanvasRoot";
 
 export const metadata: Metadata = {
-  title: "Nemo's Card Shop — Digital Soul, Physical Form • Rapier + GLSL",
-  description: "Turning NFTs into museum-grade physical slabs. Cracked ice, holo foil, vault-sealed. Now with Rapier physics pit, true WebGL forge, and Nemo that follows you when idle. Not merch. Artifacts.",
+  metadataBase: new URL('https://nemoscardshop.com'),
+  title: "Nemo's Card Shop — Digital Soul, Physical Form • Real Brand • Rapier + GLSL",
+  description: "Turning NFTs into museum-grade physical slabs. Cracked ice, holo foil, vault-sealed. Now with real brand assets, 42 slab photos, Rapier physics pit, true WebGL forge. Not merch. Artifacts.",
   openGraph: {
-    title: "Nemo's Card Shop — The Vault • Physics + WebGL",
-    description: "2,847 slabs forged. Rapier physics pit, true GLSL holo, live NFT fetch. Your JPEG deserves better.",
+    title: "Nemo's Card Shop — The Vault • Real Brand • Physics + WebGL",
+    description: "2,847 slabs forged. Real logos, real mascot, 42 slabs, Rapier physics pit, true GLSL holo. Your JPEG deserves better.",
     type: "website",
     images: [
       {
         url: "/api/og?finish=holo&name=BAYC%20%232087&collection=Bored%20Ape%20Yacht%20Club",
         width: 1200,
         height: 630,
-        alt: "Nemo's Card Shop - The Vault",
+        alt: "Nemo's Card Shop - The Vault - Real Brand",
+      },
+      {
+        url: "/og-fallback.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Nemo's Card Shop - Fallback OG - Real",
       }
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nemo's Card Shop — The Vault • Physics + WebGL",
-    description: "2,847 slabs forged. Rapier physics pit, true GLSL. Your JPEG deserves better.",
-    images: ["/api/og?finish=holo&name=BAYC%20%232087&collection=Bored%20Ape%20Yacht%20Club"],
+    title: "Nemo's Card Shop — The Vault • Real Brand",
+    description: "2,847 slabs forged. Real logos, mascot, 42 slabs, Rapier pit, true GLSL. Your JPEG deserves better.",
+    images: ["/api/og?finish=holo&name=BAYC%20%232087&collection=Bored%20Ape%20Yacht%20Club", "/og-fallback.jpg"],
+  },
+  icons: {
+    icon: [
+      { url: "/logo-mark.svg", type: "image/svg+xml" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/mascot/front.png", sizes: "180x180", type: "image/png" },
+    ],
   },
 };
 
@@ -33,6 +49,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+        <link rel="icon" href="/logo-mark.svg" type="image/svg+xml" />
+        <link rel="icon" href="/logo-mark-orange.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/mascot/front.png" />
         <style>{`
           :root {
             --font-display: 'Syne', sans-serif;

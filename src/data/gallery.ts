@@ -11,6 +11,52 @@ export interface GalleryCard {
   year: string;
 }
 
+// Real slab photography from Nemo's X - 42 images
+const realImages = [
+  'Gf7URRUWgAAsj-8.jpg',
+  'GfQ6ywDXcAAE_lj.jpg',
+  'GfbqtJcWgAAy3PD.jpg',
+  'Gfq0PT6W8AEZ1qU.jpg',
+  'GgEREahWgAAT_LW.jpg',
+  'GgVU-INXsAA8Qe_.jpg',
+  'GgYa2zVXUAMyfBl.jpg',
+  'GgYa3MWXUAApB43.jpg',
+  'GiEdRNdWgAAOrVO.jpg',
+  'Gjw0CRRXoAMjU8i.jpg',
+  'Gk0BGCMX0AASAN0.jpg',
+  'GkelAwuWYAAHrmn.jpg',
+  'Gm5ZrNoXUAAovkY.jpg',
+  'Gm69nJTakAAGkny.jpg',
+  'Gm6BzB0bYAEDdBm.jpg',
+  'Gm6BzBtbYAEKZBi.jpg',
+  'GmWxVMYa8AADD68.jpg',
+  'Go6luCPWEAA4F2A.jpg',
+  'GoSlgV-bcAAmHVs.jpg',
+  'GoSlgZDXEAAgcbU.jpg',
+  'Gpo4KagWkAEXZg7.jpg',
+  'Gpo4KaiWYAA7sLK.jpg',
+  'Gpo4KaoWUAAhtXw.jpg',
+  'Gpo4KaxWAAAPcEH.jpg',
+  'Gq3-xReXIAAx4hF.jpg',
+  'Gq6zugTXQAUJ_dr.jpg',
+  'Gr4giVUXAAAX-XC.jpg',
+  'Gs3PsPobwAAz140.jpg',
+  'Gs3PsPpbwAAZjny.jpg',
+  'Gs3PsPqbgAEIXRd.jpg',
+  'Gs3PsPqbsAEU4rw.jpg',
+  'GtB6XfiaYAA4th1.jpg',
+  'GtBYXrvW8AArtFb.jpg',
+  'GtlaXogakAAU4Va.jpg',
+  'GvM11N9WYAAbVmJ.jpg',
+  'GzyDtcnXIAEPHl6.jpg',
+  'GzyDteiXAAEcZD-.jpg',
+  'HHWpbYcagAElClx.jpg',
+  'HRZKCAZWIAMz40H.jpg',
+  'HRZKCAZXIAE1Y3Q.jpg',
+  'HRsyRcxWgAAVyH5.jpg',
+  'HSBx3_NWAAo5_wm.jpg',
+];
+
 export const galleryData: GalleryCard[] = [
   {
     id: '001',
@@ -18,7 +64,7 @@ export const galleryData: GalleryCard[] = [
     collection: 'Bored Ape Yacht Club',
     style: 'gold',
     type: '1/1',
-    image: 'https://picsum.photos/seed/bayc2087/600/840',
+    image: `/gallery/${realImages[0]}`,
     quote: 'Holy. This is heavier than I expected. Museum quality.',
     commissioner: '@ape2087',
     price: '$129',
@@ -30,7 +76,7 @@ export const galleryData: GalleryCard[] = [
     collection: 'Azuki',
     style: 'holo',
     type: '1/1',
-    image: 'https://picsum.photos/seed/azuki9605/600/840',
+    image: `/gallery/${realImages[1]}`,
     quote: 'The holo hits different IRL. Photos don\'t do it justice.',
     commissioner: '@zenft',
     price: '$79',
@@ -42,7 +88,7 @@ export const galleryData: GalleryCard[] = [
     collection: 'Doodles',
     style: 'cracked-ice',
     type: '1/1',
-    image: 'https://picsum.photos/seed/doodle6914/600/840',
+    image: `/gallery/${realImages[2]}`,
     price: '$99',
     year: '2023'
   },
@@ -52,7 +98,7 @@ export const galleryData: GalleryCard[] = [
     collection: 'CloneX',
     style: 'holo',
     type: 'batch',
-    image: 'https://picsum.photos/seed/clonex4594/600/840',
+    image: `/gallery/${realImages[3]}`,
     quote: 'Batch of 50 for our holders. Flawless.',
     commissioner: 'CloneX DAO',
     price: '$79',
@@ -64,7 +110,7 @@ export const galleryData: GalleryCard[] = [
     collection: 'Pudgy Penguins',
     style: 'base',
     type: '1/1',
-    image: 'https://picsum.photos/seed/pudgy3448/600/840',
+    image: `/gallery/${realImages[4]}`,
     price: '$49',
     year: '2023'
   },
@@ -74,7 +120,7 @@ export const galleryData: GalleryCard[] = [
     collection: 'Moonbirds',
     style: 'gold',
     type: '1/1',
-    image: 'https://picsum.photos/seed/moonbird2642/600/840',
+    image: `/gallery/${realImages[5]}`,
     price: '$129',
     year: '2024'
   },
@@ -84,7 +130,7 @@ export const galleryData: GalleryCard[] = [
     collection: 'Ape Reunion',
     style: 'cracked-ice',
     type: 'batch',
-    image: 'https://picsum.photos/seed/apereunion/600/840',
+    image: `/gallery/${realImages[6]}`,
     quote: '200 slabs for our IRL meetup. Nemo delivered in 9 days.',
     commissioner: 'Ape Reunion',
     price: '$89',
@@ -96,7 +142,7 @@ export const galleryData: GalleryCard[] = [
     collection: 'Milady Maker',
     style: 'holo',
     type: '1/1',
-    image: 'https://picsum.photos/seed/milady1523/600/840',
+    image: `/gallery/${realImages[7]}`,
     price: '$79',
     year: '2024'
   },
@@ -106,7 +152,7 @@ export const galleryData: GalleryCard[] = [
     collection: 'DeGods',
     style: 'cracked-ice',
     type: '1/1',
-    image: 'https://picsum.photos/seed/degods1234/600/840',
+    image: `/gallery/${realImages[8]}`,
     price: '$99',
     year: '2023'
   },
@@ -116,7 +162,7 @@ export const galleryData: GalleryCard[] = [
     collection: 'Memeland',
     style: 'gold',
     type: 'batch',
-    image: 'https://picsum.photos/seed/captains888/600/840',
+    image: `/gallery/${realImages[9]}`,
     price: '$129',
     year: '2024'
   },
@@ -126,7 +172,7 @@ export const galleryData: GalleryCard[] = [
     collection: 'Kanpai Pandas',
     style: 'base',
     type: '1/1',
-    image: 'https://picsum.photos/seed/kanpai420/600/840',
+    image: `/gallery/${realImages[10]}`,
     price: '$49',
     year: '2023'
   },
@@ -136,13 +182,105 @@ export const galleryData: GalleryCard[] = [
     collection: 'Chimpers',
     style: 'holo',
     type: '1/1',
-    image: 'https://picsum.photos/seed/chimpers1337/600/840',
+    image: `/gallery/${realImages[11]}`,
     quote: 'This is now my most prized possession.',
     commissioner: '@chimpermaxi',
     price: '$79',
     year: '2024'
   },
+  // Additional real slabs
+  {
+    id: '013',
+    name: 'Kanpai #881',
+    collection: 'Kanpai Pandas',
+    style: 'cracked-ice',
+    type: '1/1',
+    image: `/gallery/${realImages[12]}`,
+    price: '$99',
+    year: '2024'
+  },
+  {
+    id: '014',
+    name: 'Ape #8812 - Trippy',
+    collection: 'Bored Ape Yacht Club',
+    style: 'holo',
+    type: '1/1',
+    image: `/gallery/${realImages[13]}`,
+    price: '$79',
+    year: '2024'
+  },
+  {
+    id: '015',
+    name: 'Doodle #7721 - Rainbow',
+    collection: 'Doodles',
+    style: 'gold',
+    type: 'batch',
+    image: `/gallery/${realImages[14]}`,
+    price: '$129',
+    year: '2024'
+  },
+  {
+    id: '016',
+    name: 'Pudgy #1928 - Ice',
+    collection: 'Pudgy Penguins',
+    style: 'cracked-ice',
+    type: '1/1',
+    image: `/gallery/${realImages[15]}`,
+    price: '$99',
+    year: '2024'
+  },
+  {
+    id: '017',
+    name: 'CloneX #8821',
+    collection: 'CloneX',
+    style: 'base',
+    type: '1/1',
+    image: `/gallery/${realImages[16]}`,
+    price: '$49',
+    year: '2023'
+  },
+  {
+    id: '018',
+    name: 'Azuki #4412',
+    collection: 'Azuki',
+    style: 'gold',
+    type: '1/1',
+    image: `/gallery/${realImages[17]}`,
+    price: '$129',
+    year: '2024'
+  },
+  {
+    id: '019',
+    name: 'Moonbird #1021',
+    collection: 'Moonbirds',
+    style: 'holo',
+    type: 'batch',
+    image: `/gallery/${realImages[18]}`,
+    price: '$79',
+    year: '2024'
+  },
+  {
+    id: '020',
+    name: 'DeGods #882',
+    collection: 'DeGods',
+    style: 'base',
+    type: '1/1',
+    image: `/gallery/${realImages[19]}`,
+    price: '$49',
+    year: '2023'
+  },
+  // More real slabs for physics pit
+  ...realImages.slice(20).map((img, i) => ({
+    id: `${(21 + i).toString().padStart(3, '0')}`,
+    name: `Vault Slab #${21 + i}`,
+    collection: ['Bored Ape Yacht Club', 'Azuki', 'Doodles', 'CloneX', 'Pudgy Penguins', 'Moonbirds', 'Chimpers'][i % 7],
+    style: (['base', 'holo', 'cracked-ice', 'gold'] as const)[i % 4],
+    type: (i % 3 === 0 ? 'batch' : '1/1') as '1/1' | 'batch',
+    image: `/gallery/${img}`,
+    price: `$${[49,79,99,129][i % 4]}`,
+    year: i % 2 === 0 ? '2024' : '2023',
+  })),
 ];
 
-export const collections = ['all', 'Bored Ape Yacht Club', 'Azuki', 'Doodles', 'CloneX', 'Pudgy Penguins', 'Moonbirds'];
+export const collections = ['all', 'Bored Ape Yacht Club', 'Azuki', 'Doodles', 'CloneX', 'Pudgy Penguins', 'Moonbirds', 'Chimpers', 'Kanpai Pandas'];
 export const styles = ['all', 'base', 'holo', 'cracked-ice', 'gold'];
