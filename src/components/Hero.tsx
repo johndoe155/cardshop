@@ -18,10 +18,24 @@ export function Hero() {
     const ctx = gsap.context(() => {
       // SplitType for title
       const split = new SplitType(titleRef.current!, { types: 'lines,words,chars', tagName: 'span' });
-      
-      gsap.set(split.chars, { y: '110%', opacity: 0, rotateX: -30 });
-      
-      gsap.to(split.chars, {
+
+      // FIX: SplitType wraps each line in a display:block container so it can
+      // animate characters independently. Chrome will not paint a
+      // background-clip:text gradient once its text sits inside a block-level
+      // descendant, which made the "foil-text" (rainbow) "Form." invisible.
+      // Restore that word to plain text (its original, unsplit markup) so the
+      // gradient/sweep renders exactly as authored in .foil-text / @keyframes
+      // foilShift, and animate it in as a single unit instead of per-character.
+      const foilEl = titleRef.current!.querySelector('.foil-text') as HTMLElement | null;
+      const chars = foilEl ? split.chars.filter((c) => !foilEl.contains(c)) : split.chars;
+      if (foilEl) {
+        foilEl.textContent = 'Form.';
+        gsap.set(foilEl, { y: '110%', opacity: 0 });
+      }
+
+      gsap.set(chars, { y: '110%', opacity: 0, rotateX: -30 });
+
+      gsap.to(chars, {
         y: '0%',
         opacity: 1,
         rotateX: 0,
@@ -30,6 +44,16 @@ export function Hero() {
         ease: 'power4.out',
         delay: 0.6,
       });
+
+      if (foilEl) {
+        gsap.to(foilEl, {
+          y: '0%',
+          opacity: 1,
+          duration: 1.2,
+          ease: 'power4.out',
+          delay: 0.6 + 0.8, // lands right as the last staggered character arrives
+        });
+      }
 
       // Words for subtitle
       const desc = document.querySelector('.hero-desc') as HTMLElement;
