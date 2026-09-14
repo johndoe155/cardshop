@@ -46,32 +46,32 @@ export async function GET(request: Request) {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 10 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{ width: '40px', height: '40px', background: '#F5F3EF', color: 'black', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: '20px' }}>N</div>
-            <div>
-              <div style={{ fontWeight: 900, fontSize: '16px', letterSpacing: '-0.02em' }}>NEMO'S CARD SHOP</div>
-              <div style={{ fontSize: '9px', letterSpacing: '0.2em', opacity: 0.6 }}>DIGITAL SOUL • PHYSICAL FORM</div>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', fontWeight: 900, fontSize: '16px', letterSpacing: '-0.02em' }}>NEMO'S CARD SHOP</div>
+              <div style={{ display: 'flex', fontSize: '9px', letterSpacing: '0.2em', opacity: 0.6 }}>DIGITAL SOUL • PHYSICAL FORM</div>
             </div>
           </div>
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-            <div style={{ width: '8px', height: '8px', background: finishColor, borderRadius: '50%' }} />
-            <div style={{ fontSize: '10px', letterSpacing: '0.2em', opacity: 0.6 }}>{finish.toUpperCase()} • LIVE OG</div>
+            <div style={{ display: 'flex', width: '8px', height: '8px', background: finishColor, borderRadius: '50%' }} />
+            <div style={{ display: 'flex', fontSize: '10px', letterSpacing: '0.2em', opacity: 0.6 }}>{finish.toUpperCase()} • LIVE OG</div>
           </div>
         </div>
 
         {/* Main */}
         <div style={{ flex: 1, display: 'flex', gap: '60px', alignItems: 'center', zIndex: 10, marginTop: '40px' }}>
-          <div style={{ flex: 1 }}>
-            <div style={{ fontSize: '12px', letterSpacing: '0.3em', color: '#FF4D00', marginBottom: '16px' }}>THE VAULT • DYNAMIC OG • {finish.toUpperCase()}</div>
-            <div style={{ fontSize: '72px', fontWeight: 900, lineHeight: 0.9, letterSpacing: '-0.04em', textTransform: 'uppercase' }}>
-              <div>Digital</div>
-              <div style={{ fontWeight: 300, fontStyle: 'italic', textTransform: 'lowercase' }}>soul,</div>
-              <div style={{ color: 'rgba(245,243,239,0.1)' }}>Physical</div>
-              <div style={{ 
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: 'flex', fontSize: '12px', letterSpacing: '0.3em', color: '#FF4D00', marginBottom: '16px' }}>THE VAULT • DYNAMIC OG • {finish.toUpperCase()}</div>
+            <div style={{ display: 'flex', flexDirection: 'column', fontSize: '72px', fontWeight: 900, lineHeight: 0.9, letterSpacing: '-0.04em', textTransform: 'uppercase' }}>
+              <div style={{ display: 'flex' }}>Digital</div>
+              <div style={{ display: 'flex', fontWeight: 300, fontStyle: 'italic', textTransform: 'lowercase' }}>soul,</div>
+              <div style={{ display: 'flex', color: 'rgba(245,243,239,0.1)' }}>Physical</div>
+              <div style={{ display: 'flex', 
                 background: `linear-gradient(100deg, #FF4D00, #00E5FF, #FFE600, #FF00E5)`,
                 backgroundClip: 'text',
                 color: 'transparent',
               }}>Form.</div>
             </div>
-            <div style={{ marginTop: '24px', fontSize: '16px', opacity: 0.6, lineHeight: 1.5, maxWidth: '400px' }}>
+            <div style={{ display: 'flex', marginTop: '24px', fontSize: '16px', opacity: 0.6, lineHeight: 1.5, maxWidth: '400px' }}>
               {name} • {collection} • {finish.toUpperCase()} finish • Optical grade • 2,847 slabs forged
             </div>
           </div>
@@ -83,10 +83,10 @@ export async function GET(request: Request) {
               <span>PSA 10 • GEM MINT</span>
             </div>
             <div style={{ flex: 1, background: `linear-gradient(105deg, #111, ${finishColor}20, #111)`, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-              <div style={{ fontSize: '14px', fontWeight: 700, textAlign: 'center', padding: '20px' }}>
-                <div>{name}</div>
-                <div style={{ fontSize: '10px', opacity: 0.5, marginTop: '8px' }}>{collection}</div>
-                <div style={{ fontSize: '9px', marginTop: '16px', padding: '4px 8px', background: finishColor, color: finish === 'base' ? 'black' : 'white', display: 'inline-block' }}>{finish.toUpperCase()}</div>
+              <div style={{ display: 'flex', flexDirection: 'column', fontSize: '14px', fontWeight: 700, textAlign: 'center', padding: '20px' }}>
+                <div style={{ display: 'flex' }}>{name}</div>
+                <div style={{ display: 'flex', fontSize: '10px', opacity: 0.5, marginTop: '8px' }}>{collection}</div>
+              <div style={{ fontSize: '9px', marginTop: '16px', padding: '4px 8px', background: finishColor, color: finish === 'base' ? 'black' : 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{finish.toUpperCase()}</div>
               </div>
               <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(105deg, transparent 30%, ${finishColor}40, transparent 70%)`, mixBlendMode: 'overlay' }} />
             </div>
