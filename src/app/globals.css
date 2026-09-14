@@ -107,6 +107,16 @@ html.lenis, html.lenis body {
   z-index: 3;
 }
 
+/* Mobile fit: SplitType renders each character of the hero title as its
+   own inline box (needed for the per-letter reveal animation). Without
+   this, a narrow viewport can cause the browser to wrap a long word (e.g.
+   "Physical") between two of those character boxes instead of moving the
+   whole word to the next line. Forcing the word wrapper to stay on one
+   line keeps whole words intact. */
+.hero-title .word {
+  white-space: nowrap;
+}
+
 /* Foil text */
 .foil-text {
   background: linear-gradient(100deg, var(--foil-1), var(--foil-2), var(--foil-3), var(--foil-4), var(--foil-1));

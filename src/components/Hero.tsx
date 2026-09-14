@@ -127,7 +127,7 @@ export function Hero() {
             <div className="w-2 h-2 bg-[#00FF00] rounded-full animate-pulse" />
           </div>
 
-          <h1 ref={titleRef} className="font-display font-black text-[14vw] md:text-[10vw] lg:text-[8.5vw] leading-[0.85] tracking-[-0.04em] uppercase overflow-hidden">
+          <h1 ref={titleRef} className="hero-title font-display font-black text-[12vw] md:text-[10vw] lg:text-[8.5vw] leading-[0.85] tracking-[-0.04em] uppercase overflow-hidden">
             Digital<br/>
             <span className="font-light italic lowercase tracking-tight">soul,</span><br/>
             <span className="text-[#F5F3EF]/10">Physical</span><br/>

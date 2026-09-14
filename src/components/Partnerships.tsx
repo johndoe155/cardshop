@@ -13,7 +13,7 @@ export function Partnerships() {
             </div>
             <h2 className="font-display font-black text-[10vw] md:text-[6vw] lg:text-[5vw] leading-[0.85] tracking-tighter uppercase">
               For<br/>
-              <span className="foil-text">Communities</span><br/>
+              <span className="foil-text wrap-anywhere">Communities</span><br/>
               Not Just<br/>
               <span className="font-light italic lowercase">Collectors</span>
             </h2>

@@ -64,8 +64,8 @@ export function About() {
               { n: '12', l: 'Communities' },
               { n: '4.9/5', l: 'Avg Rating' },
             ].map(s => (
-              <div key={s.l} className="border border-[#1A1A1A] p-4 bg-[#0a0a0a]">
-                <div className="font-display font-black text-[28px] leading-none tracking-tighter">{s.n}</div>
+              <div key={s.l} className="border border-[#1A1A1A] p-2 sm:p-4 bg-[#0a0a0a]">
+                <div className="font-display font-black text-[22px] sm:text-[28px] leading-none tracking-tighter">{s.n}</div>
                 <div className="font-mono text-[9px] tracking-widest text-[#F5F3EF]/40 mt-1 uppercase">{s.l}</div>
               </div>
             ))}
