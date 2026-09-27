@@ -20,7 +20,7 @@ function SlabMesh() {
   
   const finishMap = { 'base': 0, 'holo': 1, 'cracked-ice': 2, 'gold': 3 } as const;
   
-  const imageUrl = nftData?.image || '/mascot/front.png';
+  const imageUrl = nftData?.image || 'https://picsum.photos/seed/forge/800/800';
   const texture = useTexture(imageUrl);
 
   useMemo(() => {

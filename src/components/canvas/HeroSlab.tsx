@@ -7,7 +7,7 @@ import { useVaultStore } from '@/store/useVaultStore';
 import { easing } from 'maath';
 
 export function HeroSlab() {
-  const meshRef = useRef<THREE.Mesh>(null);
+  const groupRef = useRef<THREE.Group>(null);
   const matFrontRef = useRef<any>(null);
   const matBackRef = useRef<any>(null);
   const finishType = useVaultStore((s) => s.finishType);
@@ -24,10 +24,7 @@ export function HeroSlab() {
   const finishMap = { 'base': 0, 'holo': 1, 'cracked-ice': 2, 'gold': 3 } as const;
   
   // Default texture or NFT
-  // Default face: Nemo's own card (real brand asset, local, portrait).
-  // The old picsum default was an unreachable random photo — brown-dominant,
-  // and scroll-tilt magnified it into a brown flood over the hero.
-  const imageUrl = nftData?.image || '/mascot/front.png';
+  const imageUrl = nftData?.image || 'https://picsum.photos/seed/nemohero/800/800';
   const texture = useTexture(imageUrl);
   
   // Enhance texture
@@ -39,8 +36,8 @@ export function HeroSlab() {
   }, [texture]);
 
   useFrame((state, delta) => {
-    const mesh = meshRef.current;
-    if (!mesh) return;
+    const group = groupRef.current;
+    if (!group) return;
 
     const time = state.clock.elapsedTime;
     // Pointer is read imperatively — never a React re-render source.
@@ -64,36 +61,39 @@ export function HeroSlab() {
       }
     }
 
-    // Scroll-driven tilt on every device — this reveals the slab's clean dark
-    // edge beside the card face as you scroll (the slanted-segment parallax).
-    const scrollTiltX = -local * 0.3;
+    // RIGID SLAB: tilt/parallax apply to the GROUP so card, border, label and
+    // foil move as one unit. Tilting only the card mesh made it swing outside
+    // its static border box, exposing large sheets of orange-lit dark plastic
+    // (the "brown flood") where the boxes intersected. Amplitudes are sized
+    // for this hero-local driver (the old ones were tuned for whole-page
+    // progress — ~10x too hot): max ~7deg, gentle recede, thin clean edge.
+    const scrollTiltX = -local * 0.12;
     if (!isCoarsePointer) {
       const targetRotX = (pointer.y - 0.5) * 0.4 + scrollTiltX;
       const targetRotY = (pointer.x - 0.5) * -0.65;
-      easing.dampE(mesh.rotation, [targetRotX, targetRotY, 0], 0.4, delta);
+      easing.dampE(group.rotation, [targetRotX, targetRotY, 0], 0.4, delta);
     } else {
       // Touch: scroll is the only tilt driver — inherently smooth, never jumpy
       // (unlike pointermove, which fires mid-scroll with positional jumps).
-      easing.dampE(mesh.rotation, [scrollTiltX, 0, 0], 0.5, delta);
+      easing.dampE(group.rotation, [scrollTiltX, 0, 0], 0.5, delta);
     }
 
-    // Parallax: recede + grow as the hero scrolls away.
-    easing.damp(mesh.position, 'z', -local * 2, 0.5, delta);
-    const s = 1 + local * 0.5;
-    easing.damp3(mesh.scale, [s, s, s], 0.5, delta);
+    // Parallax: recede + slight grow — apparent size shrinks ~11% over the
+    // first viewport, a true recede (the old 0.5 growth cancelled perspective,
+    // which is also why it read as "no parallax").
+    easing.damp(group.position, 'z', -local * 1.2, 0.5, delta);
+    const s = 1 + local * 0.15;
+    easing.damp3(group.scale, [s, s, s], 0.5, delta);
 
     // Subtle float
-    mesh.position.y = Math.sin(time * 0.5) * 0.05;
+    group.position.y = Math.sin(time * 0.5) * 0.05;
   });
 
   return (
-    <group>
+    <group ref={groupRef}>
       {/* Main slab — 6-material box: dark plastic sides, holo shader on the
-          front/back faces only. Previously every face used the card shader, so
-          tilted sides sampled the texture at edge UVs and rendered as a muddy
-          brown smear. The clean dark edge is what shows beside the card when
-          scroll-tilt kicks in. */}
-      <mesh ref={meshRef} position={[0, 0, 0]} scale={1}>
+          front/back faces only, so tilted sides render as clean plastic. */}
+      <mesh position={[0, 0, 0]} scale={1}>
         <boxGeometry args={[2.2, 3.0, 0.12]} />
         <meshPhysicalMaterial attach="material-0" color="#141414" roughness={0.35} metalness={0.25} clearcoat={0.8} clearcoatRoughness={0.25} />
         <meshPhysicalMaterial attach="material-1" color="#141414" roughness={0.35} metalness={0.25} clearcoat={0.8} clearcoatRoughness={0.25} />
