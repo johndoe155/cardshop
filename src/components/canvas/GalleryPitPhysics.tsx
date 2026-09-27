@@ -5,6 +5,7 @@ import { Physics, RigidBody, CuboidCollider, RapierRigidBody } from '@react-thre
 import * as THREE from 'three';
 import { useTexture } from '@react-three/drei';
 import { galleryData } from '@/data/gallery';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useVaultStore } from '@/store/useVaultStore';
 
 function Card({ image, finish, position, index, onSelect }: { image: string; finish: string; position: [number, number, number]; index: number; onSelect: () => void }) {
@@ -164,6 +165,10 @@ export default function GalleryPitPhysics({ cards }: { cards: typeof galleryData
   
   useEffect(() => {
     setMounted(true);
+    // The canvas swap (0 -> 70vh placeholder -> 75vh canvas) lands a frame or
+    // two after the viewMode flip — re-measure ScrollTriggers once it's real.
+    const raf = requestAnimationFrame(() => ScrollTrigger.refresh());
+    return () => cancelAnimationFrame(raf);
   }, []);
 
   if (!mounted) {

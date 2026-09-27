@@ -87,6 +87,13 @@ export function HeroSlab() {
 
     // Subtle float
     group.position.y = Math.sin(time * 0.5) * 0.05;
+
+    // Sanitary: this canvas is FIXED and sits behind every section; opaque
+    // section backgrounds normally hide the slab, but during very fast scrolls
+    // the compositor can present before the newly-exposed tiles are painted,
+    // flashing the slab mid-page. Past the hero there is nothing to draw —
+    // skip it entirely so a paint-lag frame shows only the dark page.
+    group.visible = local < 0.95;
   });
 
   return (

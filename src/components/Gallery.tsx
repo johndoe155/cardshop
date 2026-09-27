@@ -6,6 +6,7 @@ import { SlabFrame } from './ui/SlabFrame';
 import { MagneticButton } from './ui/MagneticButton';
 import { sounds } from '@/lib/sounds';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import dynamic from 'next/dynamic';
 
 // Dynamic import for physics pit to avoid SSR
@@ -35,6 +36,25 @@ export function Gallery() {
       { y: 0, opacity: 1, rotateX: 0, duration: 0.8, stagger: 0.04, ease: 'power4.out' }
     );
   }, [filtered, viewMode]);
+
+  // Grid <-> pit swap (and filtering) changes the document height by thousands
+  // of px. Every ScrollTrigger on the page (HowItWorks step reveals, line
+  // draw, footer parallax) measured its start/end against the old layout —
+  // without a re-measure the HowItWorks steps keep their fromTo initial state
+  // (opacity 0) and the section renders as a giant empty gap under its header.
+  useEffect(() => {
+    let raf2 = 0;
+    const raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => ScrollTrigger.refresh());
+    });
+    // Fallback for the async dynamic-import chunk (pit mounts late)
+    const fallback = setTimeout(() => ScrollTrigger.refresh(), 400);
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+      clearTimeout(fallback);
+    };
+  }, [viewMode, filtered.length]);
 
   // Physics drag handlers for grid mode (fake physics)
   const handleDragStart = (e: React.DragEvent, index: number) => {
