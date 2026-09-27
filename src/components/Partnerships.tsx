@@ -11,7 +11,7 @@ export function Partnerships() {
               <span className="font-mono text-[10px] tracking-[0.3em] text-[#FF4D00]">04 / PARTNERSHIPS</span>
               <div className="w-12 h-[1px] bg-[#FF4D00]" />
             </div>
-            <h2 className="font-display font-black text-[10vw] md:text-[6vw] lg:text-[5vw] leading-[0.85] tracking-tighter uppercase">
+            <h2 className="font-display font-black leading-[0.85] tracking-tighter uppercase" style={{ fontSize: 'var(--fs-h2)' }}>
               For<br/>
               <span className="foil-text wrap-anywhere">Communities</span><br/>
               Not Just<br/>
@@ -40,7 +40,7 @@ export function Partnerships() {
                 ].map(s => (
                   <div key={s.k} className="p-3 bg-[#080808] border border-[#1A1A1A] text-center">
                     <div className="font-mono text-[9px] text-[#F5F3EF]/30">{s.k}</div>
-                    <div className="font-bold text-[13px] mt-1">{s.v}</div>
+                    <div className="font-bold text-[13px] mt-1 tabular">{s.v}</div>
                   </div>
                 ))}
               </div>
@@ -55,17 +55,17 @@ export function Partnerships() {
 
             <div className="space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
-                <input placeholder="Project Name" className="h-12 px-4 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50 focus:outline-none" />
-                <input placeholder="Collection Size (e.g. 10k)" className="h-12 px-4 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50 focus:outline-none" />
+                <input placeholder="Project Name" className="h-12 px-4 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50" />
+                <input placeholder="Collection Size (e.g. 10k)" className="h-12 px-4 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50" />
               </div>
               <div className="grid md:grid-cols-2 gap-4">
-                <input placeholder="Your X Handle" className="h-12 px-4 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50 focus:outline-none" />
-                <input placeholder="Budget Range" className="h-12 px-4 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50 focus:outline-none" />
+                <input placeholder="Your X Handle" className="h-12 px-4 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50" />
+                <input placeholder="Budget Range" className="h-12 px-4 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50" />
               </div>
-              <textarea placeholder="Tell us about the drop — intended use, timeline, special finishes?" rows={4} className="w-full p-4 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50 focus:outline-none resize-none" />
+              <textarea placeholder="Tell us about the drop — intended use, timeline, special finishes?" rows={4} className="w-full p-4 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50 resize-none" />
               
-              <MagneticButton variant="light" size="lg" className="w-full" onClick={() => alert('Inquiry sent! Mock — Nemo will DM you on X.')}>
-                Send Inquiry → Nemo DMs You
+              <MagneticButton variant="light" size="lg" cursorLabel="SEND" className="w-full" onClick={() => alert('Inquiry sent! Mock — Nemo will DM you on X.')}>
+                Send Inquiry — Nemo DMs You
               </MagneticButton>
               
               <div className="font-mono text-[9px] text-center text-[#F5F3EF]/30">

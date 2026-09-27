@@ -14,6 +14,35 @@
   --foil-2: #00E5FF;
   --foil-3: #FFE600;
   --foil-4: #FF00E5;
+
+  /* Fluid type scale — continuous, no breakpoint jumps.
+     Slopes/offsets are fitted to the sizes the site already had at
+     375 / 768 / 1920 so nothing shrinks on common screens; the ceilings
+     are tuned to where the old uncapped vw sizes actually started to
+     look absurd (~2600px+), so big monitors keep the imposing hero and
+     only true ultrawide/4K gets tamed. */
+  --fs-display: clamp(2.9rem, 1.2rem + 7.5vw, 13.5rem);      /* hero */
+  --fs-display-md: clamp(3rem, 2.4rem + 5vw, 11.5rem);        /* feature h2 */
+  --fs-h2: clamp(2.8rem, 1.8rem + 4.2vw, 9.5rem);             /* section h2 */
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Focus ring system — one on-brand ring everywhere: nav, CTAs, cards, inputs.
+   Only paints for keyboard focus (:focus-visible), never for pointer clicks. */
+.magnetic-btn:focus-visible,
+.nav-link:focus-visible,
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 3px;
+}
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
 }
 
 @theme inline {

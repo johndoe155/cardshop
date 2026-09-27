@@ -1,18 +1,20 @@
 'use client';
 import { SlabFrame } from './ui/SlabFrame';
+import { useVaultStore } from '@/store/useVaultStore';
 
 export function About() {
+  const { setCursor } = useVaultStore();
   return (
     <section id="about" className="relative py-24 md:py-32 px-6 md:px-12 xl:px-24 bg-[#080808]">
       <div className="max-w-[1600px] mx-auto grid lg:grid-cols-[0.8fr_1.2fr] gap-12 md:gap-24 items-start">
         <div className="lg:sticky lg:top-32">
-          <SlabFrame label="FOUNDER • NEMO • @heyitsnemo_ • REAL MASCOT" foil>
+          <SlabFrame label="FOUNDER • NEMO • @heyitsnemo_" foil>
             <div className="aspect-[4/5] bg-[#0a0a0a] relative overflow-hidden">
               <img src="/mascot/front.png" alt="Nemo front" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <div className="font-display font-black text-[32px] leading-none tracking-tighter text-white">NEMO</div>
-                <div className="font-mono text-[10px] tracking-widest text-[#FF4D00] mt-1">PENGUIN • BUILDER • COLLECTOR • REAL</div>
+                <div className="font-mono text-[10px] tracking-widest text-[#FF4D00] mt-1">PENGUIN • BUILDER • COLLECTOR</div>
               </div>
               <div className="absolute top-4 right-4 w-12 h-12 bg-[#F5F3EF] p-2 rounded-full grid place-items-center rotate-12 border border-[#FF4D00]/20">
                 <img src="/logo-mark.svg" alt="N" className="w-full h-full object-contain" />
@@ -22,8 +24,8 @@ export function About() {
           </SlabFrame>
           
           <div className="mt-4 flex gap-2">
-            <a href="https://x.com/nemoscardshop" target="_blank" className="flex-1 h-10 bg-[#1A1A1A] border border-[#2A2A2A] grid place-items-center font-mono text-[10px] tracking-widest hover:border-[#F5F3EF]/20 transition-colors">X / TWITTER →</a>
-            <a href="#" className="flex-1 h-10 bg-[#1A1A1A] border border-[#2A2A2A] grid place-items-center font-mono text-[10px] tracking-widest hover:border-[#F5F3EF]/20 transition-colors">INSTAGRAM →</a>
+            <a href="https://x.com/nemoscardshop" target="_blank" rel="noopener noreferrer" onMouseEnter={() => setCursor(true, "FOLLOW")} onMouseLeave={() => setCursor(false)} className="flex-1 h-10 bg-[#1A1A1A] border border-[#2A2A2A] grid place-items-center font-mono text-[10px] tracking-widest hover:border-[#F5F3EF]/20 transition-colors cursor-none">X / TWITTER</a>
+            <a href="#" onClick={(e) => e.preventDefault()} onMouseEnter={() => setCursor(true, "SOON")} onMouseLeave={() => setCursor(false)} className="flex-1 h-10 bg-[#1A1A1A] border border-[#2A2A2A] grid place-items-center font-mono text-[10px] tracking-widest hover:border-[#F5F3EF]/20 transition-colors cursor-none">INSTAGRAM</a>
           </div>
         </div>
 
@@ -33,7 +35,7 @@ export function About() {
             <div className="w-12 h-[1px] bg-[#FF4D00]" />
           </div>
           
-          <h2 className="font-display font-black text-[8vw] md:text-[5vw] leading-[0.85] tracking-tighter uppercase">
+          <h2 className="font-display font-black leading-[0.85] tracking-tighter uppercase" style={{ fontSize: 'clamp(2rem, 1.2rem + 3.4vw, 7rem)' }}>
             Real Person.<br/>
             Real Slabs.<br/>
             <span className="font-light italic lowercase">No VC.</span>
@@ -67,7 +69,7 @@ export function About() {
               { n: '4.9/5', l: 'Avg Rating' },
             ].map(s => (
               <div key={s.l} className="border border-[#1A1A1A] p-2 sm:p-4 bg-[#0a0a0a]">
-                <div className="font-display font-black text-[22px] sm:text-[28px] leading-none tracking-tighter">{s.n}</div>
+                <div className="font-display font-black text-[22px] sm:text-[28px] leading-none tracking-tighter tabular">{s.n}</div>
                 <div className="font-mono text-[9px] tracking-widest text-[#F5F3EF]/40 mt-1 uppercase">{s.l}</div>
               </div>
             ))}

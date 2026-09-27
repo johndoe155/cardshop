@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { MagneticButton } from './ui/MagneticButton';
+import { useVaultStore } from '@/store/useVaultStore';
 
 const mockOrder = {
   id: 'NMO-8841',
@@ -12,6 +13,7 @@ const mockOrder = {
 };
 
 export function OrderStatus() {
+  const { setCursor } = useVaultStore();
   const [orderId, setOrderId] = useState('');
   const [email, setEmail] = useState('');
   const [found, setFound] = useState(false);
@@ -22,9 +24,9 @@ export function OrderStatus() {
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#1A1A1A] border border-[#2A2A2A] font-mono text-[10px] tracking-widest text-[#F5F3EF]/50 mb-6">
             <span className="w-1.5 h-1.5 bg-[#00FF00] rounded-full animate-pulse" />
-            LIVE TRACKING • SHIPPO API • REAL MASCOT • MOCK DATA
+            LIVE ORDER TRACKING • SHIPPO
           </div>
-          <h2 className="font-display font-black text-[10vw] md:text-[6vw] leading-[0.85] tracking-tighter uppercase">
+          <h2 className="font-display font-black leading-[0.85] tracking-tighter uppercase" style={{ fontSize: 'var(--fs-h2)' }}>
             Track<br/>
             <span className="font-light italic lowercase">Your Slab</span>
           </h2>
@@ -35,7 +37,7 @@ export function OrderStatus() {
             <>
               <div className="grid md:grid-cols-[1.2fr_0.8fr_0.6fr] gap-8 items-end">
                 <div>
-                  <div className="font-mono text-[10px] tracking-widest text-[#F5F3EF]/40 mb-6">ENTER ORDER DETAILS • REAL BRAND ASSETS</div>
+                  <div className="font-mono text-[10px] tracking-widest text-[#F5F3EF]/40 mb-6">ENTER ORDER DETAILS</div>
                   <div className="space-y-4">
                     <div>
                       <label className="font-mono text-[10px] tracking-widest text-[#F5F3EF]/50 mb-2 block">ORDER NUMBER</label>
@@ -43,7 +45,7 @@ export function OrderStatus() {
                         value={orderId}
                         onChange={e => setOrderId(e.target.value)}
                         placeholder="NMO-8841 (try this)"
-                        className="w-full h-14 px-4 bg-[#111] border border-[#2A2A2A] font-mono text-[14px] tracking-widest placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50 focus:outline-none"
+                        className="w-full h-14 px-4 bg-[#111] border border-[#2A2A2A] font-mono text-[14px] tracking-widest placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50"
                       />
                     </div>
                     <div>
@@ -52,20 +54,20 @@ export function OrderStatus() {
                         value={email}
                         onChange={e => setEmail(e.target.value)}
                         placeholder="collector@example.com"
-                        className="w-full h-14 px-4 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50 focus:outline-none"
+                        className="w-full h-14 px-4 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50"
                       />
                     </div>
                   </div>
                 </div>
                 <div>
-                  <MagneticButton variant="orange" size="lg" className="w-full h-14" onClick={() => setFound(true)}>
-                    Track Slab →
+                  <MagneticButton variant="orange" size="lg" cursorLabel="TRACK" className="w-full h-14" onClick={() => setFound(true)}>
+                    Track Slab
                   </MagneticButton>
-                  <div className="mt-3 font-mono text-[9px] text-center text-[#F5F3EF]/30">Try NMO-8841 for demo • Real mascot side.png</div>
+                  <div className="mt-3 font-mono text-[9px] text-center text-[#F5F3EF]/30">Demo order — try NMO-8841</div>
                 </div>
                 <div className="hidden md:block">
                   <img src="/mascot/side.png" alt="Nemo side" className="w-full h-auto object-contain opacity-90" />
-                  <div className="font-mono text-[9px] text-center text-[#F5F3EF]/30 mt-2">NEMO • TRACKING YOUR GRAIL • REAL</div>
+                  <div className="font-mono text-[9px] text-center text-[#F5F3EF]/30 mt-2">NEMO • TRACKING YOUR GRAIL</div>
                 </div>
               </div>
 
@@ -81,11 +83,16 @@ export function OrderStatus() {
                 <div className="flex items-center gap-4">
                   <img src="/mascot/thumbs-up.png" alt="Nemo thumbs" className="w-12 h-12 object-contain hidden md:block" />
                   <div>
-                    <div className="font-mono text-[10px] tracking-widest text-[#FF4D00]">ORDER FOUND • LIVE • REAL MASCOT</div>
-                    <div className="font-display font-black text-[24px] tracking-tight mt-1">{mockOrder.id} • {mockOrder.item}</div>
+                    <div className="font-mono text-[10px] tracking-widest text-[#FF4D00]">ORDER FOUND</div>
+                    <div className="font-display font-black text-[24px] tracking-tight mt-1 tabular">{mockOrder.id} • {mockOrder.item}</div>
                   </div>
                 </div>
-                <button onClick={() => setFound(false)} className="font-mono text-[10px] tracking-widest text-[#F5F3EF]/40 hover:text-[#F5F3EF] transition-colors">← NEW SEARCH</button>
+                <button
+                    onClick={() => setFound(false)}
+                    onMouseEnter={() => setCursor(true, 'BACK')}
+                    onMouseLeave={() => setCursor(false)}
+                    className="font-mono text-[10px] tracking-widest text-[#F5F3EF]/40 hover:text-[#F5F3EF] transition-colors cursor-none"
+                  >← NEW SEARCH</button>
               </div>
 
               <div className="relative">
@@ -103,7 +110,7 @@ export function OrderStatus() {
                         <div className="flex items-baseline gap-3">
                           <span className="font-bold text-[14px] tracking-wide uppercase">{s}</span>
                           {i === mockOrder.status && <span className="font-mono text-[9px] px-1.5 py-0.5 bg-[#FF4D00] text-white animate-pulse">CURRENT</span>}
-                          <span className="font-mono text-[10px] text-[#F5F3EF]/30 ml-auto">{i === 0 ? 'Mar 12' : i === 1 ? 'Mar 13' : i === 2 ? 'Mar 15 — Today' : i === 3 ? 'Est. Mar 20' : 'Est. Mar 23'}</span>
+                          <span className="font-mono text-[10px] text-[#F5F3EF]/30 ml-auto tabular">{i === 0 ? 'Mar 12' : i === 1 ? 'Mar 13' : i === 2 ? 'Mar 15 — Today' : i === 3 ? 'Est. Mar 20' : 'Est. Mar 23'}</span>
                         </div>
                         <div className="font-body text-[13px] text-[#F5F3EF]/60 mt-1">
                           {i === 0 && 'Payment confirmed, artwork verified. Queued for design.'}
@@ -120,8 +127,8 @@ export function OrderStatus() {
 
               {mockOrder.status >= 3 && (
                 <div className="mt-8 p-4 bg-[#111] border border-[#1A1A1A] flex items-center justify-between">
-                  <div className="font-mono text-[11px]"><span className="text-[#F5F3EF]/40">TRACKING:</span> <span className="text-[#F5F3EF] tracking-widest">{mockOrder.tracking}</span></div>
-                  <a href="#" className="font-mono text-[10px] tracking-widest text-[#FF4D00] hover:text-white transition-colors">OPEN IN SHIPPO →</a>
+                  <div className="font-mono text-[11px] tabular"><span className="text-[#F5F3EF]/40">TRACKING:</span> <span className="text-[#F5F3EF] tracking-widest">{mockOrder.tracking}</span></div>
+                  <a href="#" className="font-mono text-[10px] tracking-widest text-[#FF4D00] hover:text-white transition-colors">OPEN IN SHIPPO</a>
                 </div>
               )}
             </div>

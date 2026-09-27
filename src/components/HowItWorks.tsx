@@ -177,7 +177,7 @@ export function HowItWorks() {
               <div className="w-12 h-[1px] bg-[#FF4D00]" />
             </div>
             
-            <h2 className="font-display font-black text-[14vw] md:text-[10vw] lg:text-[7vw] leading-[0.85] tracking-tighter uppercase">
+            <h2 className="font-display font-black leading-[0.85] tracking-tighter uppercase" style={{ fontSize: 'var(--fs-display-md)' }}>
               How<br/>
               <span className="font-light italic lowercase">it works</span>
             </h2>

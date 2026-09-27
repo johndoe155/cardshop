@@ -133,7 +133,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
           </div>
         </div>
         <div className="mt-1 font-mono text-[8px] tracking-widest bg-black text-white px-1.5 py-0.5 border border-white/20 whitespace-nowrap">
-          NEMO • IDLE • FOLLOWING • REAL
+          NEMO • IDLE • ROAMING THE VAULT
         </div>
       </div>
     </>

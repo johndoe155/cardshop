@@ -78,7 +78,7 @@ export function Hero() {
           trigger: containerRef.current,
           start: 'top top',
           end: '+=100%',
-          scrub: 1.2,
+          scrub: 1,
         }
       });
 
@@ -126,11 +126,11 @@ export function Hero() {
         <div>
           <div className="mb-8 flex items-center gap-3">
             <div className="w-8 h-[1px] bg-[#FF4D00]" />
-            <span className="font-mono text-[10px] tracking-[0.3em] text-[#FF4D00]">EST. 2023 • 2,847 SLABS FORGED • TRUE WEBGL</span>
+            <span className="font-mono text-[10px] tracking-[0.3em] text-[#FF4D00] tabular">EST. 2023 • 2,847 SLABS FORGED</span>
             <div className="w-2 h-2 bg-[#00FF00] rounded-full animate-pulse" />
           </div>
 
-          <h1 ref={titleRef} className="hero-title font-display font-black text-[12vw] md:text-[10vw] lg:text-[8.5vw] leading-[0.85] tracking-[-0.04em] uppercase overflow-hidden">
+          <h1 ref={titleRef} className="hero-title font-display font-black leading-[0.85] tracking-[-0.04em] uppercase overflow-hidden" style={{ fontSize: 'var(--fs-display)' }}>
             Digital<br/>
             <span className="font-light italic lowercase tracking-tight">soul,</span><br/>
             <span className="text-[#F5F3EF]/10">Physical</span><br/>
@@ -140,13 +140,12 @@ export function Hero() {
           <div className="mt-10 max-w-[420px]">
             <p className="hero-desc font-body text-[16px] md:text-[18px] leading-[1.5] text-[#F5F3EF]/70">
               We turn your NFTs into museum-grade physical slabs. Cracked ice, holo foil, vault-sealed. 
-              <span className="text-[#F5F3EF] font-medium"> Not merch. Artifacts.</span> Now with Rapier physics and true GLSL.
+              <span className="text-[#F5F3EF] font-medium"> Not merch. Artifacts.</span>
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <MagneticButton size="lg" onClick={() => scrollTo('forge')}>
+              <MagneticButton size="lg" cursorLabel="FORGE" onClick={() => scrollTo('forge')}>
                 Commission a Card — $49
-                <span className="ml-2">→</span>
               </MagneticButton>
               <button
                 onClick={() => scrollTo('gallery')}
@@ -207,7 +206,7 @@ export function Hero() {
                 'RAPIER PHYSICS • LIVE', 'TRUE WEBGL • GLSL', 'WORLDWIDE SHIPPING', '7-12 DAY PRODUCTION',
                 'BASE $49', 'HOLO $79', 'CRACKED ICE $99', 'GOLD $129',
               ].map((txt, j) => (
-                <span key={j} className="flex items-center gap-8 font-mono text-[11px] tracking-widest whitespace-nowrap">
+                <span key={j} className="flex items-center gap-8 font-mono text-[11px] tracking-widest whitespace-nowrap tabular">
                   <span className="text-[#F5F3EF]/60">{txt}</span>
                   <span className="w-1 h-1 bg-[#FF4D00] rounded-full" />
                 </span>

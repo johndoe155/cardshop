@@ -81,7 +81,7 @@ export function Gallery() {
               <div className="w-12 h-[1px] bg-[#FF4D00]" />
               <span className="font-mono text-[9px] px-2 py-0.5 bg-[#FF4D00] text-white animate-pulse">RAPIER • LIVE</span>
             </div>
-            <h2 className="font-display font-black text-[12vw] md:text-[8vw] lg:text-[6vw] leading-[0.85] tracking-tighter uppercase">
+            <h2 className="font-display font-black leading-[0.85] tracking-tighter uppercase" style={{ fontSize: 'var(--fs-h2)' }}>
               The<br />
               <span className="font-light italic lowercase">Vault</span> Archive
             </h2>
@@ -91,21 +91,25 @@ export function Gallery() {
               Every slab tells a story. Drag them, toss them, they collide. Filter by collection or finish. Each one was a JPEG once. Now it's a grail.
             </p>
             <div className="mt-4 flex items-center gap-3">
-              <div className="font-mono text-[10px] text-[#F5F3EF]/30">
+              <div className="font-mono text-[10px] text-[#F5F3EF]/30 tabular">
                 {filtered.length} SLABS • {galleryData.filter(c => c.type === '1/1').length} 1/1 • {galleryData.filter(c => c.type === 'batch').length} BATCH
               </div>
               <div className="flex gap-1 ml-auto">
                 <button
                   onClick={() => setViewMode('grid')}
+                  onMouseEnter={() => setCursor(true, 'GRID')}
+                  onMouseLeave={() => setCursor(false)}
                   className={`px-3 py-1 font-mono text-[10px] tracking-widest border transition-colors ${viewMode === 'grid' ? 'bg-[#F5F3EF] text-black border-[#F5F3EF]' : 'bg-[#1A1A1A] text-[#F5F3EF]/50 border-[#2A2A2A]'}`}
                 >
                   GRID
                 </button>
                 <button
                   onClick={() => { setViewMode('pit'); sounds.success(); }}
+                  onMouseEnter={() => setCursor(true, 'PIT')}
+                  onMouseLeave={() => setCursor(false)}
                   className={`px-3 py-1 font-mono text-[10px] tracking-widest border transition-colors ${viewMode === 'pit' ? 'bg-[#FF4D00] text-white border-[#FF4D00]' : 'bg-[#1A1A1A] text-[#F5F3EF]/50 border-[#2A2A2A]'}`}
                 >
-                  PHYSICS PIT →
+                  PHYSICS PIT
                 </button>
               </div>
             </div>
@@ -124,6 +128,8 @@ export function Gallery() {
                 <button
                   key={f.id}
                   onClick={() => setFilterType(f.id as any)}
+                  onMouseEnter={() => setCursor(true, 'FILTER')}
+                  onMouseLeave={() => setCursor(false)}
                   className={`px-3 py-1 font-mono text-[10px] tracking-widest uppercase border transition-colors ${filterType === f.id ? 'bg-[#F5F3EF] text-black border-[#F5F3EF]' : 'bg-transparent text-[#F5F3EF]/50 border-[#2A2A2A] hover:text-[#F5F3EF] hover:border-[#F5F3EF]/20'}`}
                 >
                   {f.label}
@@ -138,6 +144,8 @@ export function Gallery() {
                 <button
                   key={c}
                   onClick={() => setSelectedCollection(c)}
+                  onMouseEnter={() => setCursor(true, 'FILTER')}
+                  onMouseLeave={() => setCursor(false)}
                   className={`px-3 py-1 font-mono text-[10px] tracking-widest uppercase border transition-colors ${selectedCollection === c ? 'bg-[#FF4D00] text-white border-[#FF4D00]' : 'bg-[#1A1A1A] text-[#F5F3EF]/60 border-[#2A2A2A] hover:text-[#F5F3EF]'}`}
                 >
                   {c}
@@ -152,6 +160,8 @@ export function Gallery() {
                 <button
                   key={s}
                   onClick={() => setSelectedStyle(s)}
+                  onMouseEnter={() => setCursor(true, 'FILTER')}
+                  onMouseLeave={() => setCursor(false)}
                   className={`px-3 py-1 font-mono text-[10px] tracking-widest uppercase border transition-colors ${selectedStyle === s ? 'bg-[#FF4D00] text-white border-[#FF4D00]' : 'bg-[#1A1A1A] text-[#F5F3EF]/60 border-[#2A2A2A] hover:text-[#F5F3EF]'}`}
                 >
                   {s}
@@ -163,6 +173,8 @@ export function Gallery() {
           {(selectedCollection !== 'all' || selectedStyle !== 'all') && (
             <button
               onClick={() => { setSelectedCollection('all'); setSelectedStyle('all'); }}
+              onMouseEnter={() => setCursor(true, 'CLEAR')}
+              onMouseLeave={() => setCursor(false)}
               className="ml-auto font-mono text-[10px] tracking-widest text-[#FF4D00] hover:text-white transition-colors"
             >
               CLEAR ×
@@ -242,7 +254,7 @@ export function Gallery() {
                       )}
 
                       <div className="mt-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                        <MagneticButton variant="light" size="sm" className="flex-1" onClick={() => {
+                        <MagneticButton variant="light" size="sm" cursorLabel="FORGE" className="flex-1" onClick={() => {
                           document.getElementById('forge')?.scrollIntoView({ behavior: 'smooth' });
                           sounds.success();
                         }}>
@@ -278,7 +290,7 @@ export function Gallery() {
           <div className="font-mono text-[10px] tracking-[0.3em] text-[#FF4D00] mb-2">WANT YOURS IN THE VAULT?</div>
           <div className="font-display font-black text-[32px] md:text-[40px] leading-none tracking-tighter uppercase group-hover:translate-x-1 transition-transform">Your JPEG<br/>Deserves Better</div>
         </div>
-        <MagneticButton size="lg" variant="orange" onClick={() => document.getElementById('forge')?.scrollIntoView({ behavior: 'smooth' })}>
+        <MagneticButton size="lg" variant="orange" cursorLabel="FORGE" onClick={() => document.getElementById('forge')?.scrollIntoView({ behavior: 'smooth' })}>
           Start Forging — $49
         </MagneticButton>
       </div>

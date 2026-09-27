@@ -1,8 +1,16 @@
 'use client';
 import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
+import { useVaultStore } from '@/store/useVaultStore';
+import { sounds } from '@/lib/sounds';
 
 export function Footer() {
+  const { setCursor } = useVaultStore();
+
+  const goForge = () => {
+    sounds.click();
+    document.getElementById('forge')?.scrollIntoView({ behavior: 'smooth' });
+  };
   const ctaRef = useRef<HTMLDivElement>(null);
   const watermarkRef = useRef<HTMLDivElement>(null);
 
@@ -50,7 +58,10 @@ export function Footer() {
   return (
     <footer className="relative bg-[#050505] border-t border-[#1A1A1A] px-6 md:px-12 xl:px-24 py-16 md:py-24 overflow-hidden">
       {/* Physics CTA Banner */}
-      <div ref={ctaRef} className="max-w-[1600px] mx-auto mb-16 border border-[#FF4D00]/20 bg-[#FF4D00]/5 p-8 md:p-12 relative overflow-hidden group hover:border-[#FF4D00]/40 transition-colors cursor-pointer">
+      <div ref={ctaRef} onClick={goForge} role="link" aria-label="Commission a card"
+           onMouseEnter={() => setCursor(true, "FORGE")}
+           onMouseLeave={() => setCursor(false)}
+           className="max-w-[1600px] mx-auto mb-16 border border-[#FF4D00]/20 bg-[#FF4D00]/5 p-8 md:p-12 relative overflow-hidden group hover:border-[#FF4D00]/40 transition-colors cursor-none">
         <div className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity">
           <div className="absolute inset-0" style={{
             backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,77,0,0.1) 10px, rgba(255,77,0,0.1) 11px)`
@@ -99,23 +110,23 @@ export function Footer() {
               </div>
               <div className="leading-none">
                 <img src="/logo-wordmark.svg" alt="NEMO'S CARD SHOP" className="h-6 invert mb-1" />
-                <div className="font-mono text-[9px] tracking-[0.2em] opacity-60">DIGITAL SOUL • PHYSICAL FORM • REAL BRAND</div>
+                <div className="font-mono text-[9px] tracking-[0.2em] opacity-60">DIGITAL SOUL • PHYSICAL FORM</div>
               </div>
             </div>
             <p className="font-body text-[13px] leading-relaxed text-[#F5F3EF]/50 max-w-[320px]">
               Turning NFTs into museum-grade slabs since 2023. Now with Rapier physics, true GLSL, and Nemo that follows you when idle. Not affiliated with PSA, but we have better foil and better physics.
             </p>
             <div className="mt-6 flex gap-2">
-              <a href="https://x.com/nemoscardshop" target="_blank" className="w-8 h-8 bg-[#1A1A1A] border border-[#2A2A2A] grid place-items-center font-mono text-[10px] hover:border-[#FF4D00]/50 hover:text-[#FF4D00] transition-colors">X</a>
-              <a href="#" className="w-8 h-8 bg-[#1A1A1A] border border-[#2A2A2A] grid place-items-center font-mono text-[10px] hover:border-[#FF4D00]/50 hover:text-[#FF4D00] transition-colors">IG</a>
-              <a href="#" className="w-8 h-8 bg-[#1A1A1A] border border-[#2A2A2A] grid place-items-center font-mono text-[10px] hover:border-[#FF4D00]/50 hover:text-[#FF4D00] transition-colors">DC</a>
-              <a href="#" className="w-8 h-8 bg-[#FF4D00] border border-[#FF4D00] grid place-items-center font-mono text-[10px] text-white hover:scale-110 transition-transform">GH</a>
+              <a href="https://x.com/nemoscardshop" target="_blank" rel="noopener noreferrer" onMouseEnter={() => setCursor(true, "X")} onMouseLeave={() => setCursor(false)} className="w-8 h-8 bg-[#1A1A1A] border border-[#2A2A2A] grid place-items-center font-mono text-[10px] hover:border-[#FF4D00]/50 hover:text-[#FF4D00] transition-colors cursor-none">X</a>
+              <a href="#" onClick={(e) => e.preventDefault()} onMouseEnter={() => setCursor(true, "SOON")} onMouseLeave={() => setCursor(false)} className="w-8 h-8 bg-[#1A1A1A] border border-[#2A2A2A] grid place-items-center font-mono text-[10px] hover:border-[#FF4D00]/50 hover:text-[#FF4D00] transition-colors cursor-none">IG</a>
+              <a href="#" onClick={(e) => e.preventDefault()} onMouseEnter={() => setCursor(true, "SOON")} onMouseLeave={() => setCursor(false)} className="w-8 h-8 bg-[#1A1A1A] border border-[#2A2A2A] grid place-items-center font-mono text-[10px] hover:border-[#FF4D00]/50 hover:text-[#FF4D00] transition-colors cursor-none">DC</a>
+              <a href="https://github.com/johndoe155/cardshop" target="_blank" rel="noopener noreferrer" onMouseEnter={() => setCursor(true, "REPO")} onMouseLeave={() => setCursor(false)} className="w-8 h-8 bg-[#FF4D00] border border-[#FF4D00] grid place-items-center font-mono text-[10px] text-white hover:scale-110 transition-transform cursor-none">GH</a>
             </div>
 
             <div className="mt-6 p-3 bg-[#111] border border-[#1A1A1A]">
               <div className="font-mono text-[9px] tracking-widest text-[#F5F3EF]/30">TECH STACK • 100% AWWWARDS</div>
               <div className="font-mono text-[10px] text-[#F5F3EF]/60 mt-1 leading-relaxed">
-                Next.js 16 • R3F • Rapier • GLSL • Lenis • GSAP • SplitType • Zustand • Maath • Howler
+                Next.js 16 • R3F • Rapier • GLSL • Lenis • GSAP • SplitType • Zustand • Maath • Web Audio
               </div>
             </div>
           </div>
@@ -129,7 +140,7 @@ export function Footer() {
               <div className="font-mono text-[10px] tracking-[0.2em] text-[#F5F3EF]/30 mb-4 uppercase">{col.title}</div>
               <ul className="space-y-2">
                 {col.links.map(l => (
-                  <li key={l}><a href="#" className="font-body text-[13px] text-[#F5F3EF]/60 hover:text-[#F5F3EF] hover:translate-x-1 inline-block transition-all">{l}</a></li>
+                  <li key={l}><a href="#" onClick={(e) => e.preventDefault()} onMouseEnter={() => setCursor(true, "VAULT")} onMouseLeave={() => setCursor(false)} className="font-body text-[13px] text-[#F5F3EF]/60 hover:text-[#F5F3EF] hover:translate-x-1 inline-block transition-all cursor-none">{l}</a></li>
                 ))}
               </ul>
             </div>
@@ -141,7 +152,7 @@ export function Footer() {
             ©2024 NEMO'S CARD SHOP • BUILT IN THE VAULT • OHIO + INTERNET • PHYSICS • GLSL • 60FPS
           </div>
           <div className="flex items-center gap-4 font-mono text-[10px] text-[#F5F3EF]/20">
-            <span className="flex items-center gap-1"><span className="w-1 h-1 bg-[#00FF00] rounded-full animate-pulse" /> 2,847 SLABS FORGED</span>
+            <span className="flex items-center gap-1 tabular"><span className="w-1 h-1 bg-[#00FF00] rounded-full animate-pulse" /> 2,847 SLABS FORGED</span>
             <span className="w-1 h-1 bg-[#2A2A2A] rounded-full" />
             <span>RAPIER • TRUE WEBGL</span>
             <span className="w-1 h-1 bg-[#FF4D00] rounded-full animate-pulse" />

@@ -1,17 +1,42 @@
 'use client';
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { galleryData } from '@/data/gallery';
 import { useVaultStore } from '@/store/useVaultStore';
 import { sounds } from '@/lib/sounds';
 
 export function MarqueeGallery() {
   const { setCursor } = useVaultStore();
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // One restrained entrance for the strip (header line drops in, track rises),
+  // fired once. The marquee's own motion carries the section after that —
+  // per-card staggering would fight the scroll and read templated.
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    gsap.registerPlugin(ScrollTrigger);
+    const ctx = gsap.context(() => {
+      gsap.fromTo('.marquee-head',
+        { y: 24, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
+          scrollTrigger: { trigger: sectionRef.current, start: 'top 90%', once: true } }
+      );
+      gsap.fromTo('.marquee-track',
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1.1, ease: 'power3.out', delay: 0.15,
+          scrollTrigger: { trigger: sectionRef.current, start: 'top 88%', once: true } }
+        );
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section className="relative py-6 border-y border-[#1A1A1A] overflow-hidden bg-[#0a0a0a]">
-      <div className="flex items-center gap-4 px-6 md:px-12 mb-6">
+    <section ref={sectionRef} className="relative py-6 border-y border-[#1A1A1A] overflow-hidden bg-[#0a0a0a]">
+      <div className="marquee-head flex items-center gap-4 px-6 md:px-12 mb-6">
         <div className="font-mono text-[10px] tracking-[0.3em] text-[#FF4D00]">RECENT FORGES • LIVE FROM THE VAULT</div>
         <div className="h-[1px] flex-1 bg-gradient-to-r from-[#FF4D00]/50 to-transparent" />
-        <div className="font-mono text-[10px] text-[#F5F3EF]/30">{galleryData.length} SLABS • 2023-2024</div>
+        <div className="font-mono text-[10px] text-[#F5F3EF]/30 tabular">{galleryData.length} SLABS • 2023–2024</div>
       </div>
 
       <div className="marquee-track">

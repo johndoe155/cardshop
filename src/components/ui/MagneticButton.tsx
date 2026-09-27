@@ -1,52 +1,19 @@
 'use client';
-import { useRef, useEffect } from 'react';
-import gsap from 'gsap';
+import { useMagnetic } from '@/lib/magnetic';
 import { useVaultStore } from '@/store/useVaultStore';
 import { sounds } from '@/lib/sounds';
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'light' | 'dark' | 'orange';
   size?: 'sm' | 'md' | 'lg';
+  /** Cursor context label shown in the hover ring. Defaults to 'GO'. */
+  cursorLabel?: string;
   children: React.ReactNode;
 }
 
-export function MagneticButton({ variant = 'light', size = 'md', children, className = '', onMouseEnter, onMouseLeave, ...props }: Props) {
-  const btnRef = useRef<HTMLButtonElement>(null);
+export function MagneticButton({ variant = 'light', size = 'md', cursorLabel = 'GO', children, className = '', onMouseEnter, onMouseLeave, onClick, disabled, ...props }: Props) {
+  const magneticRef = useMagnetic();
   const { setCursor } = useVaultStore();
-
-  useEffect(() => {
-    const btn = btnRef.current;
-    if (!btn) return;
-
-    const xTo = gsap.quickTo(btn, 'x', { duration: 0.6, ease: 'power3' });
-    const yTo = gsap.quickTo(btn, 'y', { duration: 0.6, ease: 'power3' });
-
-    const onMove = (e: MouseEvent) => {
-      const { left, top, width, height } = btn.getBoundingClientRect();
-      const x = e.clientX - (left + width / 2);
-      const y = e.clientY - (top + height / 2);
-      const dist = Math.sqrt(x * x + y * y);
-      if (dist < 200) {
-        xTo(x * 0.3);
-        yTo(y * 0.4);
-      } else {
-        xTo(0);
-        yTo(0);
-      }
-    };
-
-    const onLeave = () => {
-      xTo(0);
-      yTo(0);
-    };
-
-    window.addEventListener('mousemove', onMove);
-    btn.addEventListener('mouseleave', onLeave);
-    return () => {
-      window.removeEventListener('mousemove', onMove);
-      btn.removeEventListener('mouseleave', onLeave);
-    };
-  }, []);
 
   const base = 'magnetic-btn inline-flex items-center justify-center font-bold tracking-widest uppercase relative overflow-hidden rounded-none';
   const variants = {
@@ -62,10 +29,14 @@ export function MagneticButton({ variant = 'light', size = 'md', children, class
 
   return (
     <button
-      ref={btnRef}
+      ref={(node) => {
+        // useMagnetic's ref is a stable slot; assign imperatively (block body — no implicit return)
+        (magneticRef as React.MutableRefObject<HTMLButtonElement | null>).current = node;
+      }}
       className={`${base} ${variants[variant]} ${sizes[size]} ${className}`}
+      disabled={disabled}
       onMouseEnter={(e) => {
-        setCursor(true, 'GO');
+        setCursor(true, cursorLabel);
         sounds.hover();
         onMouseEnter?.(e);
       }}
@@ -74,8 +45,9 @@ export function MagneticButton({ variant = 'light', size = 'md', children, class
         onMouseLeave?.(e);
       }}
       onClick={(e) => {
+        // Click sound must fire for every magnetic button; call site logic runs after.
         sounds.click();
-        props.onClick?.(e);
+        onClick?.(e);
       }}
       {...props}
     >

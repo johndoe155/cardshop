@@ -1,6 +1,7 @@
 'use client';
 import { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
+import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import * as THREE from 'three';
 import { useTexture, OrbitControls, PerspectiveCamera } from '@react-three/drei';
 import { useVaultStore } from '@/store/useVaultStore';
@@ -79,6 +80,20 @@ function SlabMesh() {
   );
 }
 
+function FinishBloom() {
+  const { finishType } = useVaultStore();
+  const intensity =
+    finishType === 'gold' ? 1.0 :
+    finishType === 'holo' ? 0.85 :
+    finishType === 'cracked-ice' ? 0.45 :
+    0.12;
+  return (
+    <EffectComposer>
+      <Bloom mipmapBlur intensity={intensity} luminanceThreshold={0.85} luminanceSmoothing={0.15} radius={0.72} />
+    </EffectComposer>
+  );
+}
+
 export function ForgePreviewCanvas() {
   return (
     <div className="w-full h-full min-h-[500px] relative bg-[#050505] overflow-hidden">
@@ -94,6 +109,7 @@ export function ForgePreviewCanvas() {
         <pointLight position={[0, 2, 2]} intensity={0.8} color="#00E5FF" />
         
         <SlabMesh />
+        <FinishBloom />
         
         <OrbitControls
           enablePan={false}

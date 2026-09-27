@@ -49,7 +49,7 @@ export function Navbar() {
               <button
                 key={item.id}
                 onClick={() => scrollTo(item.id)}
-                className="px-5 py-2 text-[11px] font-bold tracking-widest uppercase text-[#F5F3EF]/70 hover:text-[#F5F3EF] hover:bg-white/5 rounded-full transition-colors cursor-none"
+                className="nav-link px-5 py-2 text-[11px] font-bold tracking-widest uppercase text-[#F5F3EF]/70 hover:text-[#F5F3EF] hover:bg-white/5 rounded-full transition-colors cursor-none"
                 onMouseEnter={() => setCursor(true, 'GO')}
                 onMouseLeave={() => setCursor(false)}
               >
@@ -62,7 +62,7 @@ export function Navbar() {
           <div className="pointer-events-auto flex items-center gap-2">
             <button 
               onClick={() => scrollTo('status')}
-              className="hidden md:flex w-10 h-10 bg-[#1A1A1A] border border-[#2A2A2A] text-[#F5F3EF] items-center justify-center font-mono text-[10px] hover:border-[#FF4D00]/50 transition-colors cursor-none"
+              className="nav-link hidden md:flex w-10 h-10 bg-[#1A1A1A] border border-[#2A2A2A] text-[#F5F3EF] items-center justify-center font-mono text-[10px] hover:border-[#FF4D00]/50 transition-colors cursor-none"
               onMouseEnter={() => setCursor(true, 'TRACK')}
               onMouseLeave={() => setCursor(false)}
             >

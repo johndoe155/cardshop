@@ -1,5 +1,6 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import gsap from 'gsap';
 import { useVaultStore, FinishType, SlabType } from '@/store/useVaultStore';
 import { MagneticButton } from './ui/MagneticButton';
 import { SlabFrame } from './ui/SlabFrame';
@@ -32,6 +33,30 @@ export function Forge() {
   const [uploadPreview, setUploadPreview] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [showWebGL, setShowWebGL] = useState(true);
+
+  // Step choreography: on every step change the newly-active panel rises in
+  // and its indicator dot pulses once. Deliberately scoped to the Forge flow —
+  // not blanket-applied across sections (that's the generic tell we're avoiding).
+  const prevStep = useRef(step);
+  useEffect(() => {
+    if (prevStep.current === step) return;
+    prevStep.current = step;
+    const panel = document.querySelector(`[data-forge-panel="${step}"]`);
+    if (panel) {
+      gsap.fromTo(panel,
+        { y: 28, opacity: 0.35 },
+        { y: 0, opacity: 1, duration: 0.55, ease: 'power3.out', clearProps: 'transform,opacity' }
+      );
+      gsap.fromTo(panel,
+        { borderColor: 'rgba(255,77,0,0.9)' },
+        { borderColor: 'rgba(255,77,0,0.5)', duration: 0.9, ease: 'power2.out', clearProps: 'borderColor' }
+      );
+    }
+    const dot = document.querySelector(`[data-forge-dot="${step}"]`);
+    if (dot) {
+      gsap.fromTo(dot, { scale: 1.35 }, { scale: 1, duration: 0.5, ease: 'back.out(2)', clearProps: 'scale' });
+    }
+  }, [step]);
 
   const totalPrice = (() => {
     const base = { base: 49, holo: 79, 'cracked-ice': 99, gold: 129 }[finishType];
@@ -97,14 +122,14 @@ export function Forge() {
               <div className="w-12 h-[1px] bg-[#FF4D00]" />
               <span className="font-mono text-[10px] text-[#F5F3EF]/30">LIVE GLSL • ORBITCONTROLS • 60FPS</span>
             </div>
-            <h2 className="font-display font-black text-[12vw] md:text-[8vw] lg:text-[6vw] leading-[0.85] tracking-tighter uppercase">
+            <h2 className="font-display font-black leading-[0.85] tracking-tighter uppercase" style={{ fontSize: 'var(--fs-h2)' }}>
               Forge<br/>
               <span className="font-light italic lowercase">Your Grail</span>
             </h2>
           </div>
           <div className="flex items-center gap-2">
             {[1,2,3,4].map(n => (
-              <div key={n} className={`flex items-center gap-2 ${n <= step ? '' : 'opacity-30'}`}>
+              <div key={n} data-forge-dot={n} className={`flex items-center gap-2 ${n <= step ? '' : 'opacity-30'}`}>
                 <div className={`w-8 h-8 rounded-full grid place-items-center font-mono text-[11px] font-bold border transition-colors ${n === step ? 'bg-[#FF4D00] text-white border-[#FF4D00]' : n < step ? 'bg-[#F5F3EF] text-black border-[#F5F3EF]' : 'bg-transparent text-[#F5F3EF]/40 border-[#2A2A2A]'}`}>
                   {n < step ? '✓' : n}
                 </div>
@@ -116,7 +141,7 @@ export function Forge() {
 
         <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 md:gap-12">
           <div className="space-y-6">
-            <div className={`border transition-colors ${step === 1 ? 'border-[#FF4D00]/50 bg-[#0f0f0f]' : 'border-[#1A1A1A] bg-[#0a0a0a]'} p-6 md:p-8`}>
+            <div data-forge-panel={1} className={`border transition-colors ${step === 1 ? 'border-[#FF4D00]/50 bg-[#0f0f0f]' : 'border-[#1A1A1A] bg-[#0a0a0a]'} p-6 md:p-8`}>
               <div className="flex items-center justify-between mb-6">
                 <h3 className="font-display font-bold text-[20px] tracking-tight uppercase">01 — Submit NFT / Artwork</h3>
                 <span className="font-mono text-[10px] text-[#F5F3EF]/30">READ-ONLY • ALCHEMY DEMO</span>
@@ -132,7 +157,7 @@ export function Forge() {
                           value={contract}
                           onChange={e => setContract(e.target.value)}
                           placeholder="0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D"
-                          className="w-full h-12 px-4 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] text-[#F5F3EF] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50 focus:outline-none transition-colors"
+                          className="w-full h-12 px-4 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] text-[#F5F3EF] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50 transition-colors"
                         />
                       </div>
                       <div>
@@ -142,10 +167,10 @@ export function Forge() {
                             value={tokenId}
                             onChange={e => setTokenId(e.target.value)}
                             placeholder="1"
-                            className="flex-1 h-12 px-4 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] text-[#F5F3EF] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50 focus:outline-none transition-colors"
+                            className="flex-1 h-12 px-4 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] text-[#F5F3EF] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50 transition-colors"
                           />
-                          <MagneticButton variant="orange" size="md" onClick={handleFetch} disabled={isFetchingNFT || !contract || !tokenId}>
-                            {isFetchingNFT ? 'FETCHING...' : 'FETCH →'}
+                          <MagneticButton variant="orange" size="md" cursorLabel="FETCH" onClick={handleFetch} disabled={isFetchingNFT || !contract || !tokenId}>
+                            {isFetchingNFT ? 'FETCHING...' : 'FETCH'}
                           </MagneticButton>
                         </div>
                       </div>
@@ -191,7 +216,7 @@ export function Forge() {
               )}
             </div>
 
-            <div className={`border transition-colors ${step === 2 ? 'border-[#FF4D00]/50 bg-[#0f0f0f]' : 'border-[#1A1A1A] bg-[#0a0a0a] opacity-60'} p-6 md:p-8`}>
+            <div data-forge-panel={2} className={`border transition-colors ${step === 2 ? 'border-[#FF4D00]/50 bg-[#0f0f0f]' : 'border-[#1A1A1A] bg-[#0a0a0a] opacity-60'} p-6 md:p-8`}>
               <div className="flex items-center justify-between mb-6">
                 <h3 className="font-display font-bold text-[20px] tracking-tight uppercase">02 — Choose Finish & Slab</h3>
                 <span className="font-mono text-[10px] text-[#F5F3EF]/30">GLSL SHADER • LIVE</span>
@@ -237,14 +262,14 @@ export function Forge() {
                   </div>
 
                   <div className="flex gap-2">
-                    <MagneticButton variant="dark" size="md" onClick={() => setStep(1)}>← Back</MagneticButton>
-                    <MagneticButton variant="light" size="md" className="flex-1" onClick={() => { setStep(3); sounds.success(); }}>Continue to Preview →</MagneticButton>
+                    <MagneticButton variant="dark" size="md" cursorLabel="BACK" onClick={() => setStep(1)}>← Back</MagneticButton>
+                    <MagneticButton variant="light" size="md" cursorLabel="NEXT" className="flex-1" onClick={() => { setStep(3); sounds.success(); }}>Continue to Preview</MagneticButton>
                   </div>
                 </>
               )}
             </div>
 
-            <div className={`border transition-colors ${step === 3 ? 'border-[#FF4D00]/50 bg-[#0f0f0f]' : 'border-[#1A1A1A] bg-[#0a0a0a] opacity-60'} p-6 md:p-8`}>
+            <div data-forge-panel={3} className={`border transition-colors ${step === 3 ? 'border-[#FF4D00]/50 bg-[#0f0f0f]' : 'border-[#1A1A1A] bg-[#0a0a0a] opacity-60'} p-6 md:p-8`}>
               <h3 className="font-display font-bold text-[20px] tracking-tight uppercase mb-6">03 — Preview & Quantity</h3>
               {step >= 3 && (
                 <>
@@ -252,31 +277,31 @@ export function Forge() {
                     <span className="font-mono text-[10px] tracking-widest text-[#F5F3EF]/40">QUANTITY</span>
                     <div className="flex items-center gap-2">
                       <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-8 h-8 bg-[#1A1A1A] border border-[#2A2A2A] grid place-items-center hover:border-[#F5F3EF]/20 transition-colors">−</button>
-                      <span className="w-12 h-8 bg-[#111] border border-[#2A2A2A] grid place-items-center font-mono text-[12px]">{quantity}</span>
+                      <span className="w-12 h-8 bg-[#111] border border-[#2A2A2A] grid place-items-center font-mono text-[12px] tabular">{quantity}</span>
                       <button onClick={() => setQuantity(quantity + 1)} className="w-8 h-8 bg-[#1A1A1A] border border-[#2A2A2A] grid place-items-center hover:border-[#F5F3EF]/20 transition-colors">+</button>
                     </div>
                     <span className="font-mono text-[10px] text-[#F5F3EF]/30">MAX 10 FOR 1/1 • BULK IN PARTNERSHIPS</span>
                   </div>
                   <div className="flex gap-2">
-                    <MagneticButton variant="dark" size="md" onClick={() => setStep(2)}>← Back</MagneticButton>
-                    <MagneticButton variant="orange" size="md" className="flex-1" onClick={() => { setStep(4); sounds.slabClack(); }}>Proceed to Checkout — ${totalPrice}</MagneticButton>
+                    <MagneticButton variant="dark" size="md" cursorLabel="BACK" onClick={() => setStep(2)}>← Back</MagneticButton>
+                    <MagneticButton variant="orange" size="md" cursorLabel="PAY" className="flex-1 tabular" onClick={() => { setStep(4); sounds.slabClack(); }}>Proceed to Checkout — ${totalPrice}</MagneticButton>
                   </div>
                 </>
               )}
             </div>
 
             {step === 4 && (
-              <div className="border border-[#FF4D00] bg-[#0f0f0f] p-6 md:p-8 animate-[fadeIn_0.5s]">
+              <div data-forge-panel={4} className="border border-[#FF4D00] bg-[#0f0f0f] p-6 md:p-8">
                 <h3 className="font-display font-bold text-[20px] tracking-tight uppercase mb-6">04 — Checkout (Mock)</h3>
                 <div className="space-y-4 mb-6">
-                  <input placeholder="Email" className="w-full h-12 px-4 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50 focus:outline-none" />
-                  <input placeholder="Shipping Address" className="w-full h-12 px-4 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50 focus:outline-none" />
+                  <input placeholder="Email" className="w-full h-12 px-4 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50" />
+                  <input placeholder="Shipping Address" className="w-full h-12 px-4 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50" />
                   <div className="grid grid-cols-2 gap-2">
-                    <input placeholder="City" className="h-12 px-4 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50 focus:outline-none" />
-                    <input placeholder="Postal" className="h-12 px-4 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50 focus:outline-none" />
+                    <input placeholder="City" className="h-12 px-4 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50" />
+                    <input placeholder="Postal" className="h-12 px-4 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50" />
                   </div>
                 </div>
-                <MagneticButton variant="light" size="lg" className="w-full" onClick={() => {
+                <MagneticButton variant="light" size="lg" cursorLabel="PAY" className="w-full tabular" onClick={() => {
                   setCartCount(cartCount + quantity);
                   sounds.success();
                   alert(`Order placed! Mock confirmation NMO-${Date.now().toString().slice(-6)} • $${totalPrice} • You will receive tracking via email.`);
@@ -284,7 +309,7 @@ export function Forge() {
                   setNftData(null);
                   setUploadPreview(null);
                 }}>
-                  Pay ${totalPrice} • Mock Stripe
+                  Pay ${totalPrice} — Mock Checkout
                 </MagneticButton>
                 <div className="mt-3 font-mono text-[9px] text-center text-[#F5F3EF]/30">Stripe keys not configured • This is a mock checkout for demo</div>
               </div>
@@ -333,7 +358,7 @@ export function Forge() {
                           <div className="font-bold text-[14px] text-white truncate max-w-[200px]">{nftData?.name || 'Untitled'}</div>
                           <div className="font-mono text-[10px] text-white/60">{nftData?.collection || '—'} • {finishType.toUpperCase()}</div>
                         </div>
-                        <div className="font-mono text-[10px] px-2 py-1 bg-[#FF4D00] text-white font-bold">${totalPrice}</div>
+                        <div className="font-mono text-[10px] px-2 py-1 bg-[#FF4D00] text-white font-bold tabular">${totalPrice}</div>
                       </div>
                     </div>
                   </div>
@@ -349,7 +374,7 @@ export function Forge() {
               ].map(s => (
                 <div key={s.k} className="p-3 bg-[#0a0a0a] border border-[#1A1A1A]">
                   <div className="font-mono text-[9px] tracking-widest text-[#F5F3EF]/30">{s.k}</div>
-                  <div className="font-mono text-[11px] font-bold text-[#F5F3EF] uppercase mt-1">{s.v}</div>
+                  <div className="font-mono text-[11px] font-bold text-[#F5F3EF] uppercase mt-1 tabular">{s.v}</div>
                   <div className="font-mono text-[8px] text-[#F5F3EF]/40 mt-1 truncate">{s.d}</div>
                 </div>
               ))}
