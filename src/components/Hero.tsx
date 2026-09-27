@@ -133,7 +133,7 @@ export function Hero() {
           <h1 ref={titleRef} className="hero-title font-display font-black leading-[0.85] tracking-[-0.04em] uppercase overflow-hidden" style={{ fontSize: 'var(--fs-display)' }}>
             Digital<br/>
             <span className="font-light italic lowercase tracking-tight">soul,</span><br/>
-            <span className="text-[#F5F3EF]/10">Physical</span><br/>
+            <span className="text-[#F5F3EF]/25">Physical</span><br/>
             <span className="foil-text">Form.</span>
           </h1>
 

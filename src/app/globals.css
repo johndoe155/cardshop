@@ -146,6 +146,16 @@ html.lenis, html.lenis body {
   white-space: nowrap;
 }
 
+/* Mobile: cap the display size so the longest word ("Physical") always fits
+   100vw minus page padding. Syne Black runs wide; at the fluid clamp's
+   small-screen sizes the h1's overflow-hidden clipped the word's right edge
+   on narrow phones. Desktop sizes are untouched. */
+@media (max-width: 639px) {
+  .hero-title {
+    font-size: min(var(--fs-display), 11vw);
+  }
+}
+
 /* Foil text */
 .foil-text {
   background: linear-gradient(100deg, var(--foil-1), var(--foil-2), var(--foil-3), var(--foil-4), var(--foil-1));

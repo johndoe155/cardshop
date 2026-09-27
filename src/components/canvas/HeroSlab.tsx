@@ -8,7 +8,8 @@ import { easing } from 'maath';
 
 export function HeroSlab() {
   const meshRef = useRef<THREE.Mesh>(null);
-  const materialRef = useRef<any>(null);
+  const matFrontRef = useRef<any>(null);
+  const matBackRef = useRef<any>(null);
   const finishType = useVaultStore((s) => s.finishType);
   const nftData = useVaultStore((s) => s.nftData);
   // Touch devices: pointermove fires mid-scroll with huge positional jumps,
@@ -35,52 +36,70 @@ export function HeroSlab() {
   }, [texture]);
 
   useFrame((state, delta) => {
-    if (!meshRef.current || !materialRef.current) return;
+    const mesh = meshRef.current;
+    if (!mesh) return;
 
     const time = state.clock.elapsedTime;
-    // High-frequency values are read imperatively — never subscribed — so
-    // pointermove/scroll ticks can no longer trigger React re-renders here.
-    const { pointer, scrollProgress } = useVaultStore.getState();
+    // Pointer is read imperatively — never a React re-render source.
+    const { pointer } = useVaultStore.getState();
 
-    materialRef.current.uniforms.uTime.value = time;
-    materialRef.current.uniforms.uFinish.value = finishMap[finishType];
+    // Hero-local scroll: 0 at top -> 1 after one viewport. Read straight from
+    // window.scrollY so it behaves identically under Lenis (desktop) and
+    // native touch scrolling — the store's scrollProgress is Lenis-event-driven
+    // and does not tick on touch, which is why the parallax felt dead on phones.
+    const vh = window.innerHeight || 1;
+    const local = Math.min(1, Math.max(0, (window.scrollY || 0) / vh));
 
-    if (!isCoarsePointer) {
-      easing.damp2(materialRef.current.uniforms.uPointer.value, [pointer.x, 1 - pointer.y], 0.2, delta);
-      // Tilt based on pointer (amplitude eased, damping softened 0.25 -> 0.4)
-      const targetRotX = (pointer.y - 0.5) * 0.4;
-      const targetRotY = (pointer.x - 0.5) * -0.65;
-      easing.dampE(meshRef.current.rotation, [targetRotX, targetRotY, 0], 0.4, delta);
-    } else {
-      easing.damp2(materialRef.current.uniforms.uPointer.value, [0.5, 0.5], 0.6, delta);
-      easing.dampE(meshRef.current.rotation, [0, 0, 0], 0.6, delta);
+    for (const m of [matFrontRef.current, matBackRef.current]) {
+      if (!m) continue;
+      m.uniforms.uTime.value = time;
+      m.uniforms.uFinish.value = finishMap[finishType];
+      if (!isCoarsePointer) {
+        easing.damp2(m.uniforms.uPointer.value, [pointer.x, 1 - pointer.y], 0.2, delta);
+      } else {
+        easing.damp2(m.uniforms.uPointer.value, [0.5, 0.5], 0.6, delta);
+      }
     }
 
-    // Scroll effect: scale and move (damping softened 0.3 -> 0.5)
-    const scroll = scrollProgress;
-    const targetZ = -scroll * 2;
-    const targetScale = 1 + scroll * 0.5;
-    easing.damp(meshRef.current.position, 'z', targetZ, 0.5, delta);
-    easing.damp3(meshRef.current.scale, [targetScale, targetScale, targetScale], 0.5, delta);
+    // Scroll-driven tilt on every device — this reveals the slab's clean dark
+    // edge beside the card face as you scroll (the slanted-segment parallax).
+    const scrollTiltX = -local * 0.3;
+    if (!isCoarsePointer) {
+      const targetRotX = (pointer.y - 0.5) * 0.4 + scrollTiltX;
+      const targetRotY = (pointer.x - 0.5) * -0.65;
+      easing.dampE(mesh.rotation, [targetRotX, targetRotY, 0], 0.4, delta);
+    } else {
+      // Touch: scroll is the only tilt driver — inherently smooth, never jumpy
+      // (unlike pointermove, which fires mid-scroll with positional jumps).
+      easing.dampE(mesh.rotation, [scrollTiltX, 0, 0], 0.5, delta);
+    }
+
+    // Parallax: recede + grow as the hero scrolls away.
+    easing.damp(mesh.position, 'z', -local * 2, 0.5, delta);
+    const s = 1 + local * 0.5;
+    easing.damp3(mesh.scale, [s, s, s], 0.5, delta);
 
     // Subtle float
-    meshRef.current.position.y = Math.sin(time * 0.5) * 0.05;
+    mesh.position.y = Math.sin(time * 0.5) * 0.05;
   });
 
   return (
     <group>
-      {/* Main slab */}
+      {/* Main slab — 6-material box: dark plastic sides, holo shader on the
+          front/back faces only. Previously every face used the card shader, so
+          tilted sides sampled the texture at edge UVs and rendered as a muddy
+          brown smear. The clean dark edge is what shows beside the card when
+          scroll-tilt kicks in. */}
       <mesh ref={meshRef} position={[0, 0, 0]} scale={1}>
         <boxGeometry args={[2.2, 3.0, 0.12]} />
+        <meshPhysicalMaterial attach="material-0" color="#141414" roughness={0.35} metalness={0.25} clearcoat={0.8} clearcoatRoughness={0.25} />
+        <meshPhysicalMaterial attach="material-1" color="#141414" roughness={0.35} metalness={0.25} clearcoat={0.8} clearcoatRoughness={0.25} />
+        <meshPhysicalMaterial attach="material-2" color="#0f0f0f" roughness={0.35} metalness={0.25} clearcoat={0.8} clearcoatRoughness={0.25} />
+        <meshPhysicalMaterial attach="material-3" color="#0f0f0f" roughness={0.35} metalness={0.25} clearcoat={0.8} clearcoatRoughness={0.25} />
         {/* @ts-ignore */}
-        <holoShaderMaterial
-          ref={materialRef}
-          uImage={texture}
-          uFinish={finishMap[finishType]}
-          uIntensity={1}
-          uTime={0}
-          uPointer={new THREE.Vector2(0.5, 0.5)}
-        />
+        <holoShaderMaterial attach="material-4" ref={matFrontRef} uImage={texture} uFinish={finishMap[finishType]} uIntensity={1} uTime={0} uPointer={new THREE.Vector2(0.5, 0.5)} />
+        {/* @ts-ignore */}
+        <holoShaderMaterial attach="material-5" ref={matBackRef} uImage={texture} uFinish={finishMap[finishType]} uIntensity={1} uTime={0} uPointer={new THREE.Vector2(0.5, 0.5)} />
       </mesh>
       
       {/* Slab border - thicker plastic */}
