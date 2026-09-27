@@ -24,7 +24,10 @@ export function HeroSlab() {
   const finishMap = { 'base': 0, 'holo': 1, 'cracked-ice': 2, 'gold': 3 } as const;
   
   // Default texture or NFT
-  const imageUrl = nftData?.image || 'https://picsum.photos/seed/nemohero/800/800';
+  // Default face: Nemo's own card (real brand asset, local, portrait).
+  // The old picsum default was an unreachable random photo — brown-dominant,
+  // and scroll-tilt magnified it into a brown flood over the hero.
+  const imageUrl = nftData?.image || '/mascot/front.png';
   const texture = useTexture(imageUrl);
   
   // Enhance texture

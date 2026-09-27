@@ -130,7 +130,7 @@ export function Hero() {
             <div className="w-2 h-2 bg-[#00FF00] rounded-full animate-pulse" />
           </div>
 
-          <h1 ref={titleRef} className="hero-title font-display font-black leading-[0.85] tracking-[-0.04em] uppercase overflow-hidden" style={{ fontSize: 'var(--fs-display)' }}>
+          <h1 ref={titleRef} className="hero-title font-display font-black leading-[0.85] tracking-[-0.04em] uppercase overflow-hidden">
             Digital<br/>
             <span className="font-light italic lowercase tracking-tight">soul,</span><br/>
             <span className="text-[#F5F3EF]/25">Physical</span><br/>

@@ -146,13 +146,19 @@ html.lenis, html.lenis body {
   white-space: nowrap;
 }
 
+/* Base size lives here (not inline) so the mobile cap below can win the
+   cascade — an inline font-size would override the media query. */
+.hero-title {
+  font-size: var(--fs-display);
+}
+
 /* Mobile: cap the display size so the longest word ("Physical") always fits
-   100vw minus page padding. Syne Black runs wide; at the fluid clamp's
-   small-screen sizes the h1's overflow-hidden clipped the word's right edge
-   on narrow phones. Desktop sizes are untouched. */
+   100vw minus page padding. Syne Black runs wide; the h1's overflow-hidden
+   clipped the word's right edge on narrow phones. Continuous with the clamp
+   at the 640px boundary; desktop sizes are untouched. */
 @media (max-width: 639px) {
   .hero-title {
-    font-size: min(var(--fs-display), 11vw);
+    font-size: min(var(--fs-display), 10.5vw);
   }
 }
 
