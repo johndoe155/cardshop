@@ -149,7 +149,7 @@ export function Forge() {
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 md:gap-12">
+        <div className="grid grid-cols-[minmax(0,1fr)] lg:grid-cols-[1.1fr_0.9fr] gap-8 md:gap-12">
           <div className="space-y-6">
             <div data-forge-panel={1} className={`border transition-colors ${step === 1 ? 'border-[#FF4D00]/50 bg-[#0f0f0f]' : 'border-[#1A1A1A] bg-[#0a0a0a]'} p-6 md:p-8`}>
               <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 mb-6">
@@ -177,7 +177,7 @@ export function Forge() {
                             value={tokenId}
                             onChange={e => setTokenId(e.target.value)}
                             placeholder="1"
-                            className="flex-1 h-12 px-4 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] text-[#F5F3EF] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50 transition-colors"
+                            className="flex-1 min-w-0 h-12 px-4 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] text-[#F5F3EF] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50 transition-colors"
                           />
                           <MagneticButton variant="orange" size="md" cursorLabel="FETCH" onClick={handleFetch} disabled={isFetchingNFT || !contract || !tokenId}>
                             {isFetchingNFT ? 'FETCHING...' : 'FETCH'}
@@ -306,9 +306,9 @@ export function Forge() {
                 <div className="space-y-4 mb-6">
                   <input placeholder="Email" className="w-full h-12 px-4 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50" />
                   <input placeholder="Shipping Address" className="w-full h-12 px-4 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50" />
-                  <div className="grid grid-cols-2 gap-2">
-                    <input placeholder="City" className="h-12 px-4 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50" />
-                    <input placeholder="Postal" className="h-12 px-4 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50" />
+                  <div className="grid grid-cols-1 min-[420px]:grid-cols-2 gap-2">
+                    <input placeholder="City" className="h-12 px-4 min-w-0 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50" />
+                    <input placeholder="Postal" className="h-12 px-4 min-w-0 bg-[#111] border border-[#2A2A2A] font-mono text-[12px] placeholder:text-[#F5F3EF]/20 focus:border-[#FF4D00]/50" />
                   </div>
                 </div>
                 <MagneticButton variant="light" size="lg" cursorLabel="PAY" className="w-full tabular" onClick={() => {

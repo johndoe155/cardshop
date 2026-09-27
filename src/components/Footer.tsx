@@ -102,7 +102,7 @@ export function Footer() {
       </div>
 
       <div className="max-w-[1600px] mx-auto">
-        <div className="grid lg:grid-cols-[1.5fr_1fr_1fr_1fr] gap-12">
+        <div className="grid grid-cols-[minmax(0,1fr)] lg:grid-cols-[1.5fr_1fr_1fr_1fr] gap-12">
           <div>
             <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-12 bg-[#F5F3EF] p-2 grid place-items-center">

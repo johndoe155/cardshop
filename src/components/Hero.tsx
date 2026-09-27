@@ -122,7 +122,7 @@ export function Hero() {
         backgroundSize: '80px 80px'
       }} />
 
-      <div className="relative z-10 max-w-[1600px] w-full mx-auto grid lg:grid-cols-[1.2fr_0.8fr] gap-12 items-center">
+      <div className="relative z-10 max-w-[1600px] w-full mx-auto grid grid-cols-[minmax(0,1fr)] lg:grid-cols-[1.2fr_0.8fr] gap-12 items-center">
         <div>
           <div className="mb-8 flex flex-wrap items-center gap-x-3 gap-y-2">
             <div className="w-8 h-[1px] bg-[#FF4D00]" />

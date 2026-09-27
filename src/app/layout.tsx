@@ -34,8 +34,8 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/logo-mark.svg", type: "image/svg+xml" },
       { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/logo-mark.svg", type: "image/svg+xml" },
     ],
     apple: [
       { url: "/mascot/front.png", sizes: "180x180", type: "image/png" },
@@ -49,8 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-        <link rel="icon" href="/logo-mark.svg" type="image/svg+xml" />
-        <link rel="icon" href="/logo-mark-orange.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/mascot/front.png" />
         <style>{`
           :root {

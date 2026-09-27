@@ -98,7 +98,7 @@ function FinishBloom() {
     finishType === 'cracked-ice' ? 0.45 :
     0.12;
   return (
-    <EffectComposer>
+    <EffectComposer multisampling={0}>
       <Bloom mipmapBlur intensity={intensity} luminanceThreshold={0.85} luminanceSmoothing={0.15} radius={0.72} />
     </EffectComposer>
   );

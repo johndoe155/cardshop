@@ -1,33 +1,16 @@
 'use client';
 import { Canvas } from '@react-three/fiber';
 import { Preload, PerspectiveCamera } from '@react-three/drei';
-import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import { Suspense } from 'react';
 import { HeroSlab } from './HeroSlab';
-import { useVaultStore } from '@/store/useVaultStore';
 
-/**
- * Post-processing, tuned deliberately:
- * - luminanceThreshold 0.85 → only the hottest fresnel/foil highlights bloom;
- *   the card artwork itself (rarely above 0.85 luminance) stays untouched, and
- *   DOM spec text can't bleed since it lives outside the canvas.
- * - Intensity scales with finish: holo/gold sell the "light-reactive" concept,
- *   base stays nearly clean.
- */
-function FinishBloom() {
-  const finishType = useVaultStore((s) => s.finishType);
-  const intensity =
-    finishType === 'gold' ? 0.9 :
-    finishType === 'holo' ? 0.75 :
-    finishType === 'cracked-ice' ? 0.4 :
-    0.12;
-  return (
-    <EffectComposer>
-      <Bloom mipmapBlur intensity={intensity} luminanceThreshold={0.85} luminanceSmoothing={0.15} radius={0.72} />
-    </EffectComposer>
-  );
-}
-
+// NOTE: no post-processing here, deliberately. This canvas is full-viewport,
+// FIXED, and alpha-composited over the page; a Bloom composer on a transparent
+// HalfFloat buffer can produce visible background artifacts (milky/dark veil
+// from premultiplied-alpha mismatch, black-bleed in the blur kernel) — which
+// read as "the hero background looks off". The shader's fresnel highlight is
+// strong enough to carry the hero without bloom. Bloom lives in ForgePreview
+// only, where the canvas is opaque and contained.
 function Scene() {
   return (
     <>
@@ -40,8 +23,6 @@ function Scene() {
       <Suspense fallback={null}>
         <HeroSlab />
       </Suspense>
-
-      <FinishBloom />
 
       {/* Fog for depth */}
       <fog attach="fog" args={['#080808', 5, 15]} />

@@ -6,7 +6,7 @@ export function About() {
   const setCursor = useVaultStore((s) => s.setCursor);
   return (
     <section id="about" className="relative py-24 md:py-32 px-6 md:px-12 xl:px-24 bg-[#080808]">
-      <div className="max-w-[1600px] mx-auto grid lg:grid-cols-[0.8fr_1.2fr] gap-12 md:gap-24 items-start">
+      <div className="max-w-[1600px] mx-auto grid grid-cols-[minmax(0,1fr)] lg:grid-cols-[0.8fr_1.2fr] gap-12 md:gap-24 items-start">
         <div className="lg:sticky lg:top-32">
           <SlabFrame label="FOUNDER • NEMO • @heyitsnemo_" foil>
             <div className="aspect-[4/5] bg-[#0a0a0a] relative overflow-hidden">

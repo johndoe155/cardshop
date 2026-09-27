@@ -5,7 +5,7 @@ export function Partnerships() {
   return (
     <section id="partnerships" className="relative py-24 md:py-32 px-6 md:px-12 xl:px-24 bg-[#0a0a0a] border-y border-[#1A1A1A]">
       <div className="max-w-[1600px] mx-auto">
-        <div className="grid lg:grid-cols-[1fr_1.2fr] gap-12 md:gap-16 items-start">
+        <div className="grid grid-cols-[minmax(0,1fr)] lg:grid-cols-[1fr_1.2fr] gap-12 md:gap-16 items-start">
           <div>
             <div className="flex items-center gap-3 mb-6">
               <span className="font-mono text-[10px] tracking-[0.3em] text-[#FF4D00]">04 / PARTNERSHIPS</span>
