@@ -15,7 +15,7 @@ import { useVaultStore } from '@/store/useVaultStore';
  *   base stays nearly clean.
  */
 function FinishBloom() {
-  const { finishType } = useVaultStore();
+  const finishType = useVaultStore((s) => s.finishType);
   const intensity =
     finishType === 'gold' ? 0.9 :
     finishType === 'holo' ? 0.75 :

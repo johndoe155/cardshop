@@ -12,7 +12,6 @@ function Card({ image, finish, position, index, onSelect }: { image: string; fin
   const meshRef = useRef<THREE.Mesh>(null);
   const materialRef = useRef<THREE.ShaderMaterial>(null);
   const texture = useTexture(image);
-  const { pointer } = useVaultStore();
   const [hovered, setHovered] = useState(false);
   
   // Simple shader material inline to avoid import issues
@@ -77,6 +76,7 @@ function Card({ image, finish, position, index, onSelect }: { image: string; fin
 
   useFrame((state, delta) => {
     if (materialRef.current) {
+      const { pointer } = useVaultStore.getState();
       materialRef.current.uniforms.uTime.value = state.clock.elapsedTime + index;
       materialRef.current.uniforms.uPointer.value.set(pointer.x, 1 - pointer.y);
       materialRef.current.uniforms.uIntensity.value = hovered ? 1.5 : 1.0;

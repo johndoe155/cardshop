@@ -13,7 +13,7 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 export function MagneticButton({ variant = 'light', size = 'md', cursorLabel = 'GO', children, className = '', onMouseEnter, onMouseLeave, onClick, disabled, ...props }: Props) {
   const magneticRef = useMagnetic();
-  const { setCursor } = useVaultStore();
+  const setCursor = useVaultStore((s) => s.setCursor);
 
   const base = 'magnetic-btn inline-flex items-center justify-center font-bold tracking-widest uppercase relative overflow-hidden rounded-none';
   const variants = {

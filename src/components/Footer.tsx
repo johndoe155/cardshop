@@ -5,7 +5,7 @@ import { useVaultStore } from '@/store/useVaultStore';
 import { sounds } from '@/lib/sounds';
 
 export function Footer() {
-  const { setCursor } = useVaultStore();
+  const setCursor = useVaultStore((s) => s.setCursor);
 
   const goForge = () => {
     sounds.click();
@@ -106,10 +106,10 @@ export function Footer() {
           <div>
             <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-12 bg-[#F5F3EF] p-2 grid place-items-center">
-                <img src="/logo-mark.svg" alt="Nemo's" className="w-full h-full object-contain" />
+                <img src="/logo-mark-orange.svg" alt="Nemo's" className="w-full h-full object-contain" />
               </div>
               <div className="leading-none">
-                <img src="/logo-wordmark.svg" alt="NEMO'S CARD SHOP" className="h-6 invert mb-1" />
+                <img src="/logo-wordmark.svg" alt="NEMO'S CARD SHOP" className="h-6 mb-1" />
                 <div className="font-mono text-[9px] tracking-[0.2em] opacity-60">DIGITAL SOUL • PHYSICAL FORM</div>
               </div>
             </div>

@@ -172,7 +172,7 @@ export function HowItWorks() {
       <div className="max-w-[1600px] mx-auto">
         <div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-16 md:gap-24">
           <div className="lg:sticky lg:top-32 h-fit">
-            <div className="flex items-center gap-3 mb-8">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mb-8">
               <span className="font-mono text-[10px] tracking-[0.3em] text-[#FF4D00]">01 / PROCESS • SVG LINE DRAWING</span>
               <div className="w-12 h-[1px] bg-[#FF4D00]" />
             </div>

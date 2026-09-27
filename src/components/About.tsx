@@ -3,7 +3,7 @@ import { SlabFrame } from './ui/SlabFrame';
 import { useVaultStore } from '@/store/useVaultStore';
 
 export function About() {
-  const { setCursor } = useVaultStore();
+  const setCursor = useVaultStore((s) => s.setCursor);
   return (
     <section id="about" className="relative py-24 md:py-32 px-6 md:px-12 xl:px-24 bg-[#080808]">
       <div className="max-w-[1600px] mx-auto grid lg:grid-cols-[0.8fr_1.2fr] gap-12 md:gap-24 items-start">
@@ -17,7 +17,7 @@ export function About() {
                 <div className="font-mono text-[10px] tracking-widest text-[#FF4D00] mt-1">PENGUIN • BUILDER • COLLECTOR</div>
               </div>
               <div className="absolute top-4 right-4 w-12 h-12 bg-[#F5F3EF] p-2 rounded-full grid place-items-center rotate-12 border border-[#FF4D00]/20">
-                <img src="/logo-mark.svg" alt="N" className="w-full h-full object-contain" />
+                <img src="/logo-mark-orange.svg" alt="N" className="w-full h-full object-contain" />
               </div>
               <img src="/mascot/thumbs-up.png" alt="thumbs" className="absolute bottom-20 right-4 w-16 h-16 object-contain hidden md:block" />
             </div>

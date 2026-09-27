@@ -26,7 +26,17 @@ const slabTypes: { id: SlabType; label: string; price: string; spec: string }[] 
 ];
 
 export function Forge() {
-  const { finishType, setFinishType, slabType, setSlabType, nftData, setNftData, isFetchingNFT, setIsFetchingNFT, setCursor, cartCount, setCartCount } = useVaultStore();
+  const finishType = useVaultStore((s) => s.finishType);
+  const setFinishType = useVaultStore((s) => s.setFinishType);
+  const slabType = useVaultStore((s) => s.slabType);
+  const setSlabType = useVaultStore((s) => s.setSlabType);
+  const nftData = useVaultStore((s) => s.nftData);
+  const setNftData = useVaultStore((s) => s.setNftData);
+  const isFetchingNFT = useVaultStore((s) => s.isFetchingNFT);
+  const setIsFetchingNFT = useVaultStore((s) => s.setIsFetchingNFT);
+  const setCursor = useVaultStore((s) => s.setCursor);
+  const cartCount = useVaultStore((s) => s.cartCount);
+  const setCartCount = useVaultStore((s) => s.setCartCount);
   const [step, setStep] = useState(1);
   const [contract, setContract] = useState('');
   const [tokenId, setTokenId] = useState('');
@@ -117,7 +127,7 @@ export function Forge() {
       <div className="max-w-[1600px] mx-auto relative z-10">
         <div className="flex flex-wrap items-end justify-between gap-8 mb-16">
           <div>
-            <div className="flex items-center gap-3 mb-6">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mb-6">
               <span className="font-mono text-[10px] tracking-[0.3em] text-[#FF4D00]">03 / FORGE • TRUE WEBGL</span>
               <div className="w-12 h-[1px] bg-[#FF4D00]" />
               <span className="font-mono text-[10px] text-[#F5F3EF]/30">LIVE GLSL • ORBITCONTROLS • 60FPS</span>
@@ -127,7 +137,7 @@ export function Forge() {
               <span className="font-light italic lowercase">Your Grail</span>
             </h2>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             {[1,2,3,4].map(n => (
               <div key={n} data-forge-dot={n} className={`flex items-center gap-2 ${n <= step ? '' : 'opacity-30'}`}>
                 <div className={`w-8 h-8 rounded-full grid place-items-center font-mono text-[11px] font-bold border transition-colors ${n === step ? 'bg-[#FF4D00] text-white border-[#FF4D00]' : n < step ? 'bg-[#F5F3EF] text-black border-[#F5F3EF]' : 'bg-transparent text-[#F5F3EF]/40 border-[#2A2A2A]'}`}>
@@ -142,7 +152,7 @@ export function Forge() {
         <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 md:gap-12">
           <div className="space-y-6">
             <div data-forge-panel={1} className={`border transition-colors ${step === 1 ? 'border-[#FF4D00]/50 bg-[#0f0f0f]' : 'border-[#1A1A1A] bg-[#0a0a0a]'} p-6 md:p-8`}>
-              <div className="flex items-center justify-between mb-6">
+              <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 mb-6">
                 <h3 className="font-display font-bold text-[20px] tracking-tight uppercase">01 — Submit NFT / Artwork</h3>
                 <span className="font-mono text-[10px] text-[#F5F3EF]/30">READ-ONLY • ALCHEMY DEMO</span>
               </div>
@@ -217,7 +227,7 @@ export function Forge() {
             </div>
 
             <div data-forge-panel={2} className={`border transition-colors ${step === 2 ? 'border-[#FF4D00]/50 bg-[#0f0f0f]' : 'border-[#1A1A1A] bg-[#0a0a0a] opacity-60'} p-6 md:p-8`}>
-              <div className="flex items-center justify-between mb-6">
+              <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 mb-6">
                 <h3 className="font-display font-bold text-[20px] tracking-tight uppercase">02 — Choose Finish & Slab</h3>
                 <span className="font-mono text-[10px] text-[#F5F3EF]/30">GLSL SHADER • LIVE</span>
               </div>
@@ -233,7 +243,7 @@ export function Forge() {
                           onClick={() => { setFinishType(f.id); sounds.foil(); }}
                           className={`text-left p-4 border transition-all group ${finishType === f.id ? 'bg-[#F5F3EF] text-black border-[#F5F3EF]' : 'bg-[#111] text-[#F5F3EF]/70 border-[#2A2A2A] hover:border-[#F5F3EF]/20 hover:text-[#F5F3EF]'}`}
                         >
-                          <div className="flex items-center justify-between">
+                          <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
                             <span className="font-bold text-[13px] tracking-wide uppercase">{f.label}</span>
                             <span className={`font-mono text-[11px] font-bold px-1.5 py-0.5 ${finishType === f.id ? 'bg-black text-white' : 'bg-[#FF4D00] text-white'}`}>{f.price}</span>
                           </div>
@@ -273,7 +283,7 @@ export function Forge() {
               <h3 className="font-display font-bold text-[20px] tracking-tight uppercase mb-6">03 — Preview & Quantity</h3>
               {step >= 3 && (
                 <>
-                  <div className="flex items-center gap-4 mb-6">
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-3 mb-6">
                     <span className="font-mono text-[10px] tracking-widest text-[#F5F3EF]/40">QUANTITY</span>
                     <div className="flex items-center gap-2">
                       <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-8 h-8 bg-[#1A1A1A] border border-[#2A2A2A] grid place-items-center hover:border-[#F5F3EF]/20 transition-colors">−</button>

@@ -7,7 +7,7 @@ import { useVaultStore } from '@/store/useVaultStore';
 import { sounds } from '@/lib/sounds';
 
 export function MarqueeGallery() {
-  const { setCursor } = useVaultStore();
+  const setCursor = useVaultStore((s) => s.setCursor);
   const sectionRef = useRef<HTMLElement>(null);
 
   // One restrained entrance for the strip (header line drops in, track rises),
@@ -33,7 +33,7 @@ export function MarqueeGallery() {
 
   return (
     <section ref={sectionRef} className="relative py-6 border-y border-[#1A1A1A] overflow-hidden bg-[#0a0a0a]">
-      <div className="marquee-head flex items-center gap-4 px-6 md:px-12 mb-6">
+      <div className="marquee-head flex flex-wrap items-center gap-x-4 gap-y-2 px-6 md:px-12 mb-6">
         <div className="font-mono text-[10px] tracking-[0.3em] text-[#FF4D00]">RECENT FORGES • LIVE FROM THE VAULT</div>
         <div className="h-[1px] flex-1 bg-gradient-to-r from-[#FF4D00]/50 to-transparent" />
         <div className="font-mono text-[10px] text-[#F5F3EF]/30 tabular">{galleryData.length} SLABS • 2023–2024</div>

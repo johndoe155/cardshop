@@ -13,7 +13,7 @@ const mockOrder = {
 };
 
 export function OrderStatus() {
-  const { setCursor } = useVaultStore();
+  const setCursor = useVaultStore((s) => s.setCursor);
   const [orderId, setOrderId] = useState('');
   const [email, setEmail] = useState('');
   const [found, setFound] = useState(false);

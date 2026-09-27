@@ -10,7 +10,7 @@ import { sounds } from '@/lib/sounds';
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const { setCursor } = useVaultStore();
+  const setCursor = useVaultStore((s) => s.setCursor);
 
   useEffect(() => {
     if (!containerRef.current || !titleRef.current) return;
@@ -124,7 +124,7 @@ export function Hero() {
 
       <div className="relative z-10 max-w-[1600px] w-full mx-auto grid lg:grid-cols-[1.2fr_0.8fr] gap-12 items-center">
         <div>
-          <div className="mb-8 flex items-center gap-3">
+          <div className="mb-8 flex flex-wrap items-center gap-x-3 gap-y-2">
             <div className="w-8 h-[1px] bg-[#FF4D00]" />
             <span className="font-mono text-[10px] tracking-[0.3em] text-[#FF4D00] tabular">EST. 2023 • 2,847 SLABS FORGED</span>
             <div className="w-2 h-2 bg-[#00FF00] rounded-full animate-pulse" />

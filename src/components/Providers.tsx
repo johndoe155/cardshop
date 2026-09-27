@@ -12,7 +12,10 @@ if (typeof window !== 'undefined') {
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null);
-  const { setScrollProgress, setPointer, setAudioEnabled, setFinishType } = useVaultStore();
+  const setScrollProgress = useVaultStore((s) => s.setScrollProgress);
+  const setPointer = useVaultStore((s) => s.setPointer);
+  const setAudioEnabled = useVaultStore((s) => s.setAudioEnabled);
+  const setFinishType = useVaultStore((s) => s.setFinishType);
   const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
   const [nemoActive, setNemoActive] = useState(false);
 
@@ -129,7 +132,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         <div className="relative">
           <img src="/mascot/idle.png" alt="Nemo idle" className="w-16 h-16 object-contain animate-bounce drop-shadow-[0_0_20px_rgba(255,77,0,0.5)]" />
           <div className="absolute -top-1 -right-1 w-5 h-5 bg-[#F5F3EF] p-1 rounded-full border border-[#FF4D00]/20 grid place-items-center">
-            <img src="/logo-mark.svg" alt="N" className="w-full h-full object-contain" />
+            <img src="/logo-mark-orange.svg" alt="N" className="w-full h-full object-contain" />
           </div>
         </div>
         <div className="mt-1 font-mono text-[8px] tracking-widest bg-black text-white px-1.5 py-0.5 border border-white/20 whitespace-nowrap">
@@ -144,7 +147,8 @@ export function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const followerRef = useRef<HTMLDivElement>(null);
   const nemoRef = useRef<HTMLDivElement>(null);
-  const { cursorHover, cursorLabel } = useVaultStore();
+  const cursorHover = useVaultStore((s) => s.cursorHover);
+  const cursorLabel = useVaultStore((s) => s.cursorLabel);
   const mouse = useRef({ x: 0, y: 0 });
   const followerPos = useRef({ x: 0, y: 0 });
   const nemoPos = useRef({ x: 0, y: 0 });

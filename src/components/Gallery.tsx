@@ -12,7 +12,7 @@ import dynamic from 'next/dynamic';
 const GalleryPitPhysics = dynamic(() => import('./canvas/GalleryPitPhysics'), { ssr: false });
 
 export function Gallery() {
-  const { setCursor } = useVaultStore();
+  const setCursor = useVaultStore((s) => s.setCursor);
   const [filterType, setFilterType] = useState<'all' | 'collection' | 'style'>('all');
   const [selectedCollection, setSelectedCollection] = useState('all');
   const [selectedStyle, setSelectedStyle] = useState('all');

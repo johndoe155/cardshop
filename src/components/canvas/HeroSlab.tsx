@@ -9,7 +9,15 @@ import { easing } from 'maath';
 export function HeroSlab() {
   const meshRef = useRef<THREE.Mesh>(null);
   const materialRef = useRef<any>(null);
-  const { pointer, finishType, nftData, scrollProgress } = useVaultStore();
+  const finishType = useVaultStore((s) => s.finishType);
+  const nftData = useVaultStore((s) => s.nftData);
+  // Touch devices: pointermove fires mid-scroll with huge positional jumps,
+  // which made the slab lurch. On coarse pointers we skip pointer-driven tilt
+  // and uPointer chase entirely — the auto-float carries the motion instead.
+  const isCoarsePointer = useMemo(
+    () => typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches,
+    []
+  );
   
   // Map finish type to shader uniform
   const finishMap = { 'base': 0, 'holo': 1, 'cracked-ice': 2, 'gold': 3 } as const;
@@ -28,27 +36,33 @@ export function HeroSlab() {
 
   useFrame((state, delta) => {
     if (!meshRef.current || !materialRef.current) return;
-    
+
     const time = state.clock.elapsedTime;
-    
-    // Pointer lerp
-    easing.damp2(materialRef.current.uniforms.uPointer.value, [pointer.x, 1 - pointer.y], 0.15, delta);
+    // High-frequency values are read imperatively — never subscribed — so
+    // pointermove/scroll ticks can no longer trigger React re-renders here.
+    const { pointer, scrollProgress } = useVaultStore.getState();
+
     materialRef.current.uniforms.uTime.value = time;
     materialRef.current.uniforms.uFinish.value = finishMap[finishType];
-    
-    // Tilt based on pointer
-    const targetRotX = (pointer.y - 0.5) * 0.5;
-    const targetRotY = (pointer.x - 0.5) * -0.8;
-    
-    easing.dampE(meshRef.current.rotation, [targetRotX, targetRotY, 0], 0.25, delta);
-    
-    // Scroll effect: scale and move
+
+    if (!isCoarsePointer) {
+      easing.damp2(materialRef.current.uniforms.uPointer.value, [pointer.x, 1 - pointer.y], 0.2, delta);
+      // Tilt based on pointer (amplitude eased, damping softened 0.25 -> 0.4)
+      const targetRotX = (pointer.y - 0.5) * 0.4;
+      const targetRotY = (pointer.x - 0.5) * -0.65;
+      easing.dampE(meshRef.current.rotation, [targetRotX, targetRotY, 0], 0.4, delta);
+    } else {
+      easing.damp2(materialRef.current.uniforms.uPointer.value, [0.5, 0.5], 0.6, delta);
+      easing.dampE(meshRef.current.rotation, [0, 0, 0], 0.6, delta);
+    }
+
+    // Scroll effect: scale and move (damping softened 0.3 -> 0.5)
     const scroll = scrollProgress;
     const targetZ = -scroll * 2;
     const targetScale = 1 + scroll * 0.5;
-    easing.damp(meshRef.current.position, 'z', targetZ, 0.3, delta);
-    easing.damp3(meshRef.current.scale, [targetScale, targetScale, targetScale], 0.3, delta);
-    
+    easing.damp(meshRef.current.position, 'z', targetZ, 0.5, delta);
+    easing.damp3(meshRef.current.scale, [targetScale, targetScale, targetScale], 0.5, delta);
+
     // Subtle float
     meshRef.current.position.y = Math.sin(time * 0.5) * 0.05;
   });

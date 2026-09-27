@@ -11,7 +11,12 @@ import '@/components/canvas/HoloMaterial'; // registers holoShaderMaterial via e
 function SlabMesh() {
   const meshRef = useRef<THREE.Mesh>(null);
   const materialRef = useRef<any>(null);
-  const { pointer, finishType, nftData } = useVaultStore();
+  const finishType = useVaultStore((s) => s.finishType);
+  const nftData = useVaultStore((s) => s.nftData);
+  const isCoarsePointer = useMemo(
+    () => typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches,
+    []
+  );
   
   const finishMap = { 'base': 0, 'holo': 1, 'cracked-ice': 2, 'gold': 3 } as const;
   
@@ -29,8 +34,13 @@ function SlabMesh() {
     if (!meshRef.current || !materialRef.current) return;
     
     const time = state.clock.elapsedTime;
-    
-    easing.damp2(materialRef.current.uniforms.uPointer.value, [pointer.x, 1 - pointer.y], 0.15, delta);
+    const { pointer } = useVaultStore.getState();
+
+    if (!isCoarsePointer) {
+      easing.damp2(materialRef.current.uniforms.uPointer.value, [pointer.x, 1 - pointer.y], 0.2, delta);
+    } else {
+      easing.damp2(materialRef.current.uniforms.uPointer.value, [0.5, 0.5], 0.6, delta);
+    }
     materialRef.current.uniforms.uTime.value = time;
     materialRef.current.uniforms.uFinish.value = finishMap[finishType];
     
@@ -81,7 +91,7 @@ function SlabMesh() {
 }
 
 function FinishBloom() {
-  const { finishType } = useVaultStore();
+  const finishType = useVaultStore((s) => s.finishType);
   const intensity =
     finishType === 'gold' ? 1.0 :
     finishType === 'holo' ? 0.85 :
