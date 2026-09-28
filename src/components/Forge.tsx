@@ -13,10 +13,22 @@ import dynamic from 'next/dynamic';
 const ForgePreview = dynamic(() => Promise.resolve(ForgePreviewCanvas), { ssr: false });
 
 const finishes: { id: FinishType; label: string; price: string; desc: string; shader: string }[] = [
-  { id: 'base', label: 'Base', price: '$49', desc: 'Matte, clean, grail-ready', shader: 'Matte • No foil' },
-  { id: 'holo', label: 'Holo', price: '$79', desc: 'Rainbow foil, light-reactive', shader: 'Fresnel + rainbow' },
-  { id: 'cracked-ice', label: 'Cracked Ice', price: '$99', desc: 'Fractured, icy, 1/1 energy', shader: 'Voronoi + displacement' },
-  { id: 'gold', label: 'Gold', price: '$129', desc: '24k mirror, vault tier', shader: 'Metallic • SSS' },
+  { id: 'base', label: 'Base', price: '$20', desc: 'Matte, clean, grail-ready', shader: 'Matte • No foil' },
+  { id: 'holo', label: 'Holo', price: '$25', desc: 'Rainbow foil, light-reactive', shader: 'Fresnel + rainbow' },
+  { id: 'cracked-ice', label: 'Cracked Ice', price: '$30', desc: 'Fractured, icy, 1/1 energy', shader: 'Voronoi + displacement' },
+  { id: 'gold', label: 'Gold', price: '$40', desc: '24k mirror, vault tier', shader: 'Metallic • SSS' },
+];
+
+// Final pricing (client-approved anchors, extended):
+// Singles in standard slab: Base $20 • Holo $25 • Cracked Ice $30 • Gold $40.
+// Bulk auto-applies per card at 10/25/50/100+; slab upgrades (+$15/+$40) add on
+// top of the per-card rate at any quantity.
+const SINGLE_PRICE: Record<FinishType, number> = { base: 20, holo: 25, 'cracked-ice': 30, gold: 40 };
+const BULK_TIERS: { min: number; price: Record<FinishType, number> }[] = [
+  { min: 100, price: { base: 11, holo: 15, 'cracked-ice': 18, gold: 24 } },
+  { min: 50, price: { base: 13, holo: 17, 'cracked-ice': 20, gold: 27 } },
+  { min: 25, price: { base: 15, holo: 19, 'cracked-ice': 23, gold: 30 } },
+  { min: 10, price: { base: 17, holo: 21, 'cracked-ice': 25, gold: 34 } },
 ];
 
 const slabTypes: { id: SlabType; label: string; price: string; spec: string }[] = [
@@ -68,11 +80,11 @@ export function Forge() {
     }
   }, [step]);
 
-  const totalPrice = (() => {
-    const base = { base: 49, holo: 79, 'cracked-ice': 99, gold: 129 }[finishType];
-    const slabAdd = { standard: 0, premium: 15, vault: 40 }[slabType];
-    return (base + slabAdd) * quantity;
-  })();
+  const slabAdd = { standard: 0, premium: 15, vault: 40 }[slabType];
+  const bulkTier = BULK_TIERS.find(t => quantity >= t.min);
+  const unitPrice = bulkTier ? bulkTier.price[finishType] : SINGLE_PRICE[finishType];
+  const savings = bulkTier ? (SINGLE_PRICE[finishType] - unitPrice) * quantity : 0;
+  const totalPrice = (unitPrice + slabAdd) * quantity;
 
   const handleFetch = async () => {
     if (!contract || !tokenId) return;
@@ -288,9 +300,11 @@ export function Forge() {
                     <div className="flex items-center gap-2">
                       <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-8 h-8 bg-[#1A1A1A] border border-[#2A2A2A] grid place-items-center hover:border-[#F5F3EF]/20 transition-colors">−</button>
                       <span className="w-12 h-8 bg-[#111] border border-[#2A2A2A] grid place-items-center font-mono text-[12px] tabular">{quantity}</span>
-                      <button onClick={() => setQuantity(quantity + 1)} className="w-8 h-8 bg-[#1A1A1A] border border-[#2A2A2A] grid place-items-center hover:border-[#F5F3EF]/20 transition-colors">+</button>
+                      <button onClick={() => setQuantity(Math.min(500, quantity + 1))} className="w-8 h-8 bg-[#1A1A1A] border border-[#2A2A2A] grid place-items-center hover:border-[#F5F3EF]/20 transition-colors">+</button>
                     </div>
-                    <span className="font-mono text-[10px] text-[#F5F3EF]/30">MAX 10 FOR 1/1 • BULK IN PARTNERSHIPS</span>
+                    <span className="font-mono text-[10px] text-[#F5F3EF]/30 tabular">
+                      ${unitPrice}/CARD{bulkTier ? ' • BULK RATE' : ''}{savings > 0 ? ` • SAVE $${savings}` : ''} • UP TO 500
+                    </span>
                   </div>
                   <div className="flex gap-2">
                     <MagneticButton variant="dark" size="md" cursorLabel="BACK" onClick={() => setStep(2)}>← Back</MagneticButton>
@@ -321,7 +335,9 @@ export function Forge() {
                 }}>
                   Pay ${totalPrice} — Mock Checkout
                 </MagneticButton>
-                <div className="mt-3 font-mono text-[9px] text-center text-[#F5F3EF]/30">Stripe keys not configured • This is a mock checkout for demo</div>
+                <div className="mt-3 font-mono text-[9px] text-center text-[#F5F3EF]/30 tabular">
+                  Free US shipping • $15 flat international • Mock checkout — no payment taken
+                </div>
               </div>
             )}
           </div>

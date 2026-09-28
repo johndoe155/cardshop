@@ -34,8 +34,8 @@ export function Partnerships() {
 
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { k: 'Min Order', v: '25 slabs' },
-                  { k: 'Discount', v: 'Up to 30%' },
+                  { k: 'Min Project', v: '25 slabs' },
+                  { k: 'Discount', v: 'Up to 45%' },
                   { k: 'Turnaround', v: '7-14 days' },
                 ].map(s => (
                   <div key={s.k} className="p-3 bg-[#080808] border border-[#1A1A1A] text-center">

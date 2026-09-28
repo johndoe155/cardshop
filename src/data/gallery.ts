@@ -67,7 +67,7 @@ export const galleryData: GalleryCard[] = [
     image: `/gallery/${realImages[0]}`,
     quote: 'Holy. This is heavier than I expected. Museum quality.',
     commissioner: '@ape2087',
-    price: '$129',
+    price: '$40',
     year: '2024'
   },
   {
@@ -79,7 +79,7 @@ export const galleryData: GalleryCard[] = [
     image: `/gallery/${realImages[1]}`,
     quote: 'The holo hits different IRL. Photos don\'t do it justice.',
     commissioner: '@zenft',
-    price: '$79',
+    price: '$25',
     year: '2024'
   },
   {
@@ -89,7 +89,7 @@ export const galleryData: GalleryCard[] = [
     style: 'cracked-ice',
     type: '1/1',
     image: `/gallery/${realImages[2]}`,
-    price: '$99',
+    price: '$30',
     year: '2023'
   },
   {
@@ -101,7 +101,7 @@ export const galleryData: GalleryCard[] = [
     image: `/gallery/${realImages[3]}`,
     quote: 'Batch of 50 for our holders. Flawless.',
     commissioner: 'CloneX DAO',
-    price: '$79',
+    price: '$25',
     year: '2024'
   },
   {
@@ -111,7 +111,7 @@ export const galleryData: GalleryCard[] = [
     style: 'base',
     type: '1/1',
     image: `/gallery/${realImages[4]}`,
-    price: '$49',
+    price: '$20',
     year: '2023'
   },
   {
@@ -121,7 +121,7 @@ export const galleryData: GalleryCard[] = [
     style: 'gold',
     type: '1/1',
     image: `/gallery/${realImages[5]}`,
-    price: '$129',
+    price: '$40',
     year: '2024'
   },
   {
@@ -133,7 +133,7 @@ export const galleryData: GalleryCard[] = [
     image: `/gallery/${realImages[6]}`,
     quote: '200 slabs for our IRL meetup. Nemo delivered in 9 days.',
     commissioner: 'Ape Reunion',
-    price: '$89',
+    price: '$30',
     year: '2024'
   },
   {
@@ -143,7 +143,7 @@ export const galleryData: GalleryCard[] = [
     style: 'holo',
     type: '1/1',
     image: `/gallery/${realImages[7]}`,
-    price: '$79',
+    price: '$25',
     year: '2024'
   },
   {
@@ -153,7 +153,7 @@ export const galleryData: GalleryCard[] = [
     style: 'cracked-ice',
     type: '1/1',
     image: `/gallery/${realImages[8]}`,
-    price: '$99',
+    price: '$30',
     year: '2023'
   },
   {
@@ -163,7 +163,7 @@ export const galleryData: GalleryCard[] = [
     style: 'gold',
     type: 'batch',
     image: `/gallery/${realImages[9]}`,
-    price: '$129',
+    price: '$40',
     year: '2024'
   },
   {
@@ -173,7 +173,7 @@ export const galleryData: GalleryCard[] = [
     style: 'base',
     type: '1/1',
     image: `/gallery/${realImages[10]}`,
-    price: '$49',
+    price: '$20',
     year: '2023'
   },
   {
@@ -185,7 +185,7 @@ export const galleryData: GalleryCard[] = [
     image: `/gallery/${realImages[11]}`,
     quote: 'This is now my most prized possession.',
     commissioner: '@chimpermaxi',
-    price: '$79',
+    price: '$25',
     year: '2024'
   },
   // Additional real slabs
@@ -196,7 +196,7 @@ export const galleryData: GalleryCard[] = [
     style: 'cracked-ice',
     type: '1/1',
     image: `/gallery/${realImages[12]}`,
-    price: '$99',
+    price: '$30',
     year: '2024'
   },
   {
@@ -206,7 +206,7 @@ export const galleryData: GalleryCard[] = [
     style: 'holo',
     type: '1/1',
     image: `/gallery/${realImages[13]}`,
-    price: '$79',
+    price: '$25',
     year: '2024'
   },
   {
@@ -216,7 +216,7 @@ export const galleryData: GalleryCard[] = [
     style: 'gold',
     type: 'batch',
     image: `/gallery/${realImages[14]}`,
-    price: '$129',
+    price: '$40',
     year: '2024'
   },
   {
@@ -226,7 +226,7 @@ export const galleryData: GalleryCard[] = [
     style: 'cracked-ice',
     type: '1/1',
     image: `/gallery/${realImages[15]}`,
-    price: '$99',
+    price: '$30',
     year: '2024'
   },
   {
@@ -236,7 +236,7 @@ export const galleryData: GalleryCard[] = [
     style: 'base',
     type: '1/1',
     image: `/gallery/${realImages[16]}`,
-    price: '$49',
+    price: '$20',
     year: '2023'
   },
   {
@@ -246,7 +246,7 @@ export const galleryData: GalleryCard[] = [
     style: 'gold',
     type: '1/1',
     image: `/gallery/${realImages[17]}`,
-    price: '$129',
+    price: '$40',
     year: '2024'
   },
   {
@@ -256,7 +256,7 @@ export const galleryData: GalleryCard[] = [
     style: 'holo',
     type: 'batch',
     image: `/gallery/${realImages[18]}`,
-    price: '$79',
+    price: '$25',
     year: '2024'
   },
   {
@@ -266,7 +266,7 @@ export const galleryData: GalleryCard[] = [
     style: 'base',
     type: '1/1',
     image: `/gallery/${realImages[19]}`,
-    price: '$49',
+    price: '$20',
     year: '2023'
   },
   // More real slabs for physics pit
@@ -277,7 +277,7 @@ export const galleryData: GalleryCard[] = [
     style: (['base', 'holo', 'cracked-ice', 'gold'] as const)[i % 4],
     type: (i % 3 === 0 ? 'batch' : '1/1') as '1/1' | 'batch',
     image: `/gallery/${img}`,
-    price: `$${[49,79,99,129][i % 4]}`,
+    price: `$${[20,25,30,40][i % 4]}`,
     year: i % 2 === 0 ? '2024' : '2023',
   })),
 ];

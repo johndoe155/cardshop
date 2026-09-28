@@ -87,7 +87,7 @@ export default function Home() {
             </div>
             <div className="flex-1 min-w-[240px]">
               <div className="text-[#F5F3EF]/30 mb-2">SHIPPING</div>
-              <div className="text-[#F5F3EF]/60">US $8 • Intl $18 • Free over $200. 7-12 day production, then carrier. Tracking via Shippo mock.</div>
+              <div className="text-[#F5F3EF]/60">Free within the US. $15 flat international — no minimum. 7–12 days from order placed to cards shipped. Tracking via Shippo mock.</div>
             </div>
             <div className="flex-1 min-w-[240px]">
               <div className="text-[#F5F3EF]/30 mb-2">RETURNS</div>

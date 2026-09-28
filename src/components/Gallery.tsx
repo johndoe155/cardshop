@@ -311,7 +311,7 @@ export function Gallery() {
           <div className="font-display font-black text-[32px] md:text-[40px] leading-none tracking-tighter uppercase group-hover:translate-x-1 transition-transform">Your JPEG<br/>Deserves Better</div>
         </div>
         <MagneticButton size="lg" variant="orange" cursorLabel="FORGE" onClick={() => document.getElementById('forge')?.scrollIntoView({ behavior: 'smooth' })}>
-          Start Forging — $49
+          Start Forging — $20
         </MagneticButton>
       </div>
     </section>

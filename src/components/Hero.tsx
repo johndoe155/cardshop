@@ -145,7 +145,7 @@ export function Hero() {
 
             <div className="mt-8 flex flex-wrap gap-3">
               <MagneticButton size="lg" cursorLabel="FORGE" onClick={() => scrollTo('forge')}>
-                Commission a Card — $49
+                Commission a Card — $20
               </MagneticButton>
               <button
                 onClick={() => scrollTo('gallery')}
@@ -202,9 +202,9 @@ export function Hero() {
           {[...Array(2)].map((_, i) => (
             <div key={i} className="flex items-center gap-8 pr-8">
               {[
-                'BASE $49', 'HOLO $79', 'CRACKED ICE $99', 'GOLD $129',
-                'RAPIER PHYSICS • LIVE', 'TRUE WEBGL • GLSL', 'WORLDWIDE SHIPPING', '7-12 DAY PRODUCTION',
-                'BASE $49', 'HOLO $79', 'CRACKED ICE $99', 'GOLD $129',
+                'BASE $20', 'HOLO $25', 'CRACKED ICE $30', 'GOLD $40',
+                'FREE US SHIPPING', '$15 INTL FLAT', 'BULK FROM $11/CARD', '7-12 DAYS TO SHIPPED',
+                'BASE $20', 'HOLO $25', 'CRACKED ICE $30', 'GOLD $40',
               ].map((txt, j) => (
                 <span key={j} className="flex items-center gap-8 font-mono text-[11px] tracking-widest whitespace-nowrap tabular">
                   <span className="text-[#F5F3EF]/60">{txt}</span>
