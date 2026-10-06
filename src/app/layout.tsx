@@ -13,16 +13,10 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/api/og?finish=holo&name=BAYC%20%232087&collection=Bored%20Ape%20Yacht%20Club",
-        width: 1200,
-        height: 630,
-        alt: "Nemo's Card Shop - The Vault - Real Brand",
-      },
-      {
         url: "/og-fallback.jpg",
         width: 1200,
         height: 630,
-        alt: "Nemo's Card Shop - Fallback OG - Real",
+        alt: "Nemo's Card Shop - The Vault",
       }
     ],
   },
@@ -30,7 +24,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Nemo's Card Shop — The Vault • Real Brand",
     description: "2,847 slabs forged. Real logos, mascot, 42 slabs, Rapier pit, true GLSL. Your JPEG deserves better.",
-    images: ["/api/og?finish=holo&name=BAYC%20%232087&collection=Bored%20Ape%20Yacht%20Club", "/og-fallback.jpg"],
+    images: ["/og-fallback.jpg"],
   },
   icons: {
     icon: [
