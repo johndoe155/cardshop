@@ -5,6 +5,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useVaultStore } from '@/store/useVaultStore';
 import { initSounds, sounds } from '@/lib/sounds';
+import { enableGyro, initDeviceTilt } from '@/lib/deviceTilt';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -50,9 +51,15 @@ export function Providers({ children }: { children: React.ReactNode }) {
     };
     window.addEventListener('pointermove', onPointerMove);
 
+    // Phones have no hover, so the foil used to sit frozen at uPointer 0.5/0.5
+    // there. Android just needs the listener; iOS gates DeviceOrientation
+    // behind a grant that only resolves inside a user gesture — this is it.
+    initDeviceTilt();
+
     const onFirstInteraction = () => {
       initSounds();
       setAudioEnabled(true);
+      void enableGyro();
       window.removeEventListener('click', onFirstInteraction);
       window.removeEventListener('keydown', onFirstInteraction);
     };

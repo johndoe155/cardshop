@@ -1,6 +1,6 @@
 'use client';
 import { Canvas } from '@react-three/fiber';
-import { Preload, PerspectiveCamera } from '@react-three/drei';
+import { Preload, PerspectiveCamera, Environment, Lightformer } from '@react-three/drei';
 import { Suspense } from 'react';
 import { HeroSlab } from './HeroSlab';
 
@@ -20,6 +20,16 @@ function Scene() {
       <directionalLight position={[-5, -2, 3]} intensity={0.5} color="#FF4D00" />
       <pointLight position={[0, 2, 2]} intensity={0.8} color="#00E5FF" />
 
+      {/* Baked once (frames={1}) from a handful of Lightformers — gives the
+          slab's plastic border and foil edge something to reflect. No HDR
+          download, and it costs one render pass at mount. */}
+      <Environment resolution={128} frames={1}>
+        <Lightformer form="rect" intensity={2.2} color="#ffffff" position={[0, 3, 2]} scale={[6, 3, 1]} target={[0, 0, 0]} />
+        <Lightformer form="rect" intensity={2.6} color="#FF4D00" position={[-3.5, 0, 1.5]} scale={[3, 6, 1]} target={[0, 0, 0]} />
+        <Lightformer form="rect" intensity={1.8} color="#00E5FF" position={[3.5, -1, 1.5]} scale={[3, 6, 1]} target={[0, 0, 0]} />
+        <Lightformer form="ring" intensity={1.4} color="#ffffff" position={[0, 0, 4]} scale={3} target={[0, 0, 0]} />
+      </Environment>
+
       <Suspense fallback={null}>
         <HeroSlab />
       </Suspense>
@@ -31,13 +41,23 @@ function Scene() {
 }
 
 export function CanvasRoot() {
+  // The hero canvas is FIXED, pointer-events:none and sits *behind* the page,
+  // so it can never be the topmost hit target — R3F pointer events would never
+  // fire and the foil would keep using the window-wide pointer. Routing the
+  // event source to <body> lets every pointermove bubble up to R3F, which then
+  // raycasts and hands us the exact uv on the slab. R3F flips the canvas'
+  // own pointer-events to none automatically when eventSource is set.
+  const eventSource = typeof document === 'undefined' ? undefined : document.body;
+
   return (
     <div className="fixed inset-0 w-full h-[100vh] pointer-events-none z-0">
       <Canvas
         gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
         dpr={[1, 2]}
         frameloop="always"
-        style={{ background: 'transparent' }}
+        eventSource={eventSource}
+        eventPrefix="client"
+        style={{ background: 'transparent', pointerEvents: 'none' }}
       >
         <Scene />
         <Preload all />

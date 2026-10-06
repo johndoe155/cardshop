@@ -1,46 +1,69 @@
 'use client';
 import { useRef, useMemo } from 'react';
-import { useFrame, useThree } from '@react-three/fiber';
+import { useFrame, useThree, type ThreeEvent } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useTexture } from '@react-three/drei';
 import { useVaultStore } from '@/store/useVaultStore';
 import { easing } from 'maath';
+import { deviceTilt, tiltTarget } from '@/lib/deviceTilt';
+import {
+  finishIndex,
+  prepareTexture,
+  updateHoloMaterial,
+  type HoloMaterial,
+} from './HoloMaterial';
+import '@/components/canvas/HoloMaterial'; // registers holoShaderMaterial via extend()
+
+const CARD_ASPECT = 2.2 / 3.0;
 
 export function HeroSlab() {
   const groupRef = useRef<THREE.Group>(null);
-  const matFrontRef = useRef<any>(null);
-  const matBackRef = useRef<any>(null);
+  const matFrontRef = useRef<HoloMaterial>(null);
+  const matBackRef = useRef<HoloMaterial>(null);
   const finishType = useVaultStore((s) => s.finishType);
   const nftData = useVaultStore((s) => s.nftData);
+  const gl = useThree((s) => s.gl);
   // Touch devices: pointermove fires mid-scroll with huge positional jumps,
-  // which made the slab lurch. On coarse pointers we skip pointer-driven tilt
-  // and uPointer chase entirely — the auto-float carries the motion instead.
+  // which made the slab lurch. On coarse pointers the GROUP tilt ignores the
+  // pointer entirely (scroll + gyro carry it instead) — the shader's foil
+  // hotspot is separate and still follows a finger straight off e.uv.
   const isCoarsePointer = useMemo(
     () => typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches,
     []
   );
-  
-  // Map finish type to shader uniform
-  const finishMap = { 'base': 0, 'holo': 1, 'cracked-ice': 2, 'gold': 3 } as const;
-  
+
   // Default texture or NFT
   const imageUrl = nftData?.image || 'https://picsum.photos/seed/nemohero/800/800';
   const texture = useTexture(imageUrl);
-  
-  // Enhance texture
-  useMemo(() => {
-    if (texture) {
-      texture.colorSpace = THREE.SRGBColorSpace;
-      texture.minFilter = THREE.LinearFilter;
-    }
-  }, [texture]);
+
+  // Applied during render, not in an effect: the texture would otherwise get
+  // one frame on the GPU with the wrong (linear) transfer function.
+  useMemo(() => prepareTexture(texture, gl), [texture, gl]);
+
+  // Pointer position ON THE CARD (0..1 uv), not the window. R3F gives us the
+  // intersection uv, so the highlight sits exactly under the cursor — the old
+  // window-normalised pointer parked the glow wherever the cursor happened to
+  // be on the page, even when it was nowhere near the slab.
+  const pointerUv = useRef(new THREE.Vector2(0.5, 0.5));
+  const tilt = useRef(new THREE.Vector2(0, 0));
+  const finishInit = useRef(false);
+
+  const onPointerMove = (e: ThreeEvent<PointerEvent>) => {
+    if (!e.uv) return;
+    pointerUv.current.set(e.uv.x, e.uv.y);
+  };
+  const onPointerOut = () => {
+    // Drift the hotspot back to centre when the cursor leaves the slab.
+    pointerUv.current.set(0.5, 0.5);
+  };
 
   useFrame((state, delta) => {
     const group = groupRef.current;
     if (!group) return;
 
     const time = state.clock.elapsedTime;
-    // Pointer is read imperatively — never a React re-render source.
+    // Window pointer is still used for the group tilt only — read imperatively,
+    // never a React re-render source.
     const { pointer } = useVaultStore.getState();
 
     // Hero-local scroll: 0 at top -> 1 after one viewport. Read straight from
@@ -50,15 +73,19 @@ export function HeroSlab() {
     const vh = window.innerHeight || 1;
     const local = Math.min(1, Math.max(0, (window.scrollY || 0) / vh));
 
+    tiltTarget(tilt.current, pointerUv.current.x, pointerUv.current.y);
+    const ctx = {
+      time,
+      delta,
+      finish: finishIndex(finishType),
+      intensity: 1,
+      texture,
+      pointer: pointerUv.current,
+      tilt: tilt.current,
+      init: finishInit,
+    };
     for (const m of [matFrontRef.current, matBackRef.current]) {
-      if (!m) continue;
-      m.uniforms.uTime.value = time;
-      m.uniforms.uFinish.value = finishMap[finishType];
-      if (!isCoarsePointer) {
-        easing.damp2(m.uniforms.uPointer.value, [pointer.x, 1 - pointer.y], 0.2, delta);
-      } else {
-        easing.damp2(m.uniforms.uPointer.value, [0.5, 0.5], 0.6, delta);
-      }
+      updateHoloMaterial(m, ctx);
     }
 
     // RIGID SLAB: tilt/parallax apply to the GROUP so card, border, label and
@@ -75,7 +102,8 @@ export function HeroSlab() {
     } else {
       // Touch: scroll is the only tilt driver — inherently smooth, never jumpy
       // (unlike pointermove, which fires mid-scroll with positional jumps).
-      easing.dampE(group.rotation, [scrollTiltX, 0, 0], 0.5, delta);
+      // deviceTilt (gyro) still drives the foil hue through uTilt.
+      easing.dampE(group.rotation, [scrollTiltX + deviceTilt.y * 0.06, deviceTilt.x * -0.08, 0], 0.5, delta);
     }
 
     // Parallax: recede + slight grow — apparent size shrinks ~11% over the
@@ -100,20 +128,36 @@ export function HeroSlab() {
     <group ref={groupRef}>
       {/* Main slab — 6-material box: dark plastic sides, holo shader on the
           front/back faces only, so tilted sides render as clean plastic. */}
-      <mesh position={[0, 0, 0]} scale={1}>
+      <mesh
+        position={[0, 0, 0]}
+        scale={1}
+        onPointerMove={onPointerMove}
+        onPointerOut={onPointerOut}
+      >
         <boxGeometry args={[2.2, 3.0, 0.12]} />
         <meshPhysicalMaterial attach="material-0" color="#141414" roughness={0.35} metalness={0.25} clearcoat={0.8} clearcoatRoughness={0.25} />
         <meshPhysicalMaterial attach="material-1" color="#141414" roughness={0.35} metalness={0.25} clearcoat={0.8} clearcoatRoughness={0.25} />
         <meshPhysicalMaterial attach="material-2" color="#0f0f0f" roughness={0.35} metalness={0.25} clearcoat={0.8} clearcoatRoughness={0.25} />
         <meshPhysicalMaterial attach="material-3" color="#0f0f0f" roughness={0.35} metalness={0.25} clearcoat={0.8} clearcoatRoughness={0.25} />
-        {/* @ts-ignore */}
-        <holoShaderMaterial attach="material-4" ref={matFrontRef} uImage={texture} uFinish={finishMap[finishType]} uIntensity={1} uTime={0} uPointer={new THREE.Vector2(0.5, 0.5)} />
-        {/* @ts-ignore */}
-        <holoShaderMaterial attach="material-5" ref={matBackRef} uImage={texture} uFinish={finishMap[finishType]} uIntensity={1} uTime={0} uPointer={new THREE.Vector2(0.5, 0.5)} />
+        <holoShaderMaterial
+          attach="material-4"
+          ref={matFrontRef}
+          uImage={texture}
+          uCardAspect={CARD_ASPECT}
+          uIntensity={1}
+        />
+        <holoShaderMaterial
+          attach="material-5"
+          ref={matBackRef}
+          uImage={texture}
+          uCardAspect={CARD_ASPECT}
+          uIntensity={1}
+        />
       </mesh>
-      
-      {/* Slab border - thicker plastic */}
-      <mesh position={[0, 0, -0.01]} scale={[1.08, 1.06, 1]}>
+
+      {/* Slab border - thicker plastic. raycast is disabled so it never sits
+          between the cursor and the card face (pointer must stay on the slab). */}
+      <mesh position={[0, 0, -0.01]} scale={[1.08, 1.06, 1]} raycast={() => null}>
         <boxGeometry args={[2.2, 3.0, 0.1]} />
         <meshPhysicalMaterial
           color="#1a1a1a"
@@ -123,17 +167,18 @@ export function HeroSlab() {
           clearcoatRoughness={0.1}
           transparent
           opacity={0.9}
+          envMapIntensity={1.1}
         />
       </mesh>
-      
+
       {/* Label area at bottom */}
-      <mesh position={[0, -1.1, 0.07]}>
+      <mesh position={[0, -1.1, 0.07]} raycast={() => null}>
         <planeGeometry args={[1.8, 0.5]} />
         <meshStandardMaterial color="#0a0a0a" roughness={0.8} />
       </mesh>
-      
+
       {/* Foil edge */}
-      <mesh position={[0, 0, 0.065]}>
+      <mesh position={[0, 0, 0.065]} raycast={() => null}>
         <boxGeometry args={[2.22, 3.02, 0.01]} />
         <meshBasicMaterial color="#FF4D00" transparent opacity={0.15} />
       </mesh>
@@ -142,16 +187,38 @@ export function HeroSlab() {
 }
 
 // Simpler version for gallery
-export function GallerySlab({ image, finish = 'holo', position = [0,0,0] as any, rotation = [0,0,0] as any }: any) {
+type GallerySlabProps = {
+  image: string;
+  finish?: string;
+  position?: [number, number, number];
+  rotation?: [number, number, number];
+};
+
+export function GallerySlab({ image, finish = 'holo', position = [0, 0, 0], rotation = [0, 0, 0] }: GallerySlabProps) {
   const meshRef = useRef<THREE.Mesh>(null);
-  const materialRef = useRef<any>(null);
+  const materialRef = useRef<HoloMaterial>(null);
   const texture = useTexture(image);
-  const finishMap = { 'base': 0, 'holo': 1, 'cracked-ice': 2, 'gold': 3 } as const;
+  const gl = useThree((s) => s.gl);
+  const pointerUv = useRef(new THREE.Vector2(0.5, 0.5));
+  const tilt = useRef(new THREE.Vector2(0, 0));
+  const finishInit = useRef(false);
+
+  // Applied during render, not in an effect: the texture would otherwise get
+  // one frame on the GPU with the wrong (linear) transfer function.
+  useMemo(() => prepareTexture(texture, gl), [texture, gl]);
 
   useFrame((state, delta) => {
-    if (!materialRef.current) return;
-    materialRef.current.uniforms.uTime.value = state.clock.elapsedTime;
-    materialRef.current.uniforms.uFinish.value = finishMap[finish as keyof typeof finishMap] ?? 1;
+    tiltTarget(tilt.current, pointerUv.current.x, pointerUv.current.y);
+    updateHoloMaterial(materialRef.current, {
+      time: state.clock.elapsedTime,
+      delta,
+      finish: finishIndex(finish),
+      intensity: 1,
+      texture,
+      pointer: pointerUv.current,
+      tilt: tilt.current,
+      init: finishInit,
+    });
     // slow auto rotation
     if (meshRef.current) {
       meshRef.current.rotation.y += delta * 0.1;
@@ -159,14 +226,21 @@ export function GallerySlab({ image, finish = 'holo', position = [0,0,0] as any,
   });
 
   return (
-    <mesh ref={meshRef} position={position} rotation={rotation}>
+    <mesh
+      ref={meshRef}
+      position={position}
+      rotation={rotation}
+      onPointerMove={(e) => {
+        if (!e.uv) return;
+        pointerUv.current.set(e.uv.x, e.uv.y);
+      }}
+      onPointerOut={() => pointerUv.current.set(0.5, 0.5)}
+    >
       <boxGeometry args={[1.6, 2.2, 0.08]} />
-      {/* @ts-ignore */}
       <holoShaderMaterial
         ref={materialRef}
         uImage={texture}
-        uFinish={finishMap[finish as keyof typeof finishMap] ?? 1}
-        uPointer={new THREE.Vector2(0.5, 0.5)}
+        uCardAspect={1.6 / 2.2}
       />
     </mesh>
   );
